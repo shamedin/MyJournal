@@ -52,139 +52,136 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     pdf.text(`Trade ID (Today): ${trade.tradeIdFromToday}`, col2X, yPos);
     yPos += 6;
 
-    // ============ CHARTS SECTION (FULL WIDTH, LARGE) ============
-    pdf.setFontSize(10);
+    // ============ MAIN LAYOUT - TWO COLUMNS ============
+    const chartColWidth = (contentWidth * 0.6);
+    const infoColWidth = (contentWidth * 0.4) - 2;
+    const chartColX = margin;
+    const infoColX = margin + chartColWidth + 2;
+
+    // ============ LEFT COLUMN - SCREENSHOTS (FULL HEIGHT, ONE COLUMN) ============
+    let chartY = yPos;
+    pdf.setFontSize(9);
     pdf.setFont(undefined, 'bold');
-    pdf.text('SCREENSHOTS', margin, yPos);
-    yPos += 4;
+    pdf.text('SCREENSHOTS', chartColX, chartY);
+    chartY += 3;
 
-    // Calculate optimal chart layout
-    const chartBoxWidth = (contentWidth - 4) / 3;
-    const chartBoxHeight = 38;
+    const chartBoxHeight = 18;
+    const chartSpacing = 1;
 
-    // Helper to add chart with border
-    const addChartBox = (imageData: string | undefined, label: string, xPos: number, yPos: number) => {
+    // Helper to add chart with border in one column
+    const addChartBox = (imageData: string | undefined, label: string, yPos: number) => {
       // Label
-      pdf.setFontSize(8);
+      pdf.setFontSize(7);
       pdf.setFont(undefined, 'bold');
-      pdf.text(label, xPos, yPos - 2);
+      pdf.text(label, chartColX, yPos - 0.5);
 
       // Border box
       pdf.setDrawColor(150, 150, 150);
-      pdf.rect(xPos, yPos, chartBoxWidth, chartBoxHeight);
+      pdf.rect(chartColX, yPos, chartColWidth, chartBoxHeight);
 
       // Add image if exists
       if (imageData) {
         try {
-          pdf.addImage(imageData, 'JPEG', xPos + 1, yPos + 1, chartBoxWidth - 2, chartBoxHeight - 2);
+          pdf.addImage(imageData, 'JPEG', chartColX + 0.5, yPos + 0.5, chartColWidth - 1, chartBoxHeight - 1);
         } catch (e) {
           // Image error - just keep empty box
         }
       }
     };
 
-    // Add all three charts in a row
-    addChartBox(trade.chart1D, '1D', margin, yPos);
-    addChartBox(trade.chart4H, '4H', margin + chartBoxWidth + 2, yPos);
-    addChartBox(trade.chart15M, '15M', margin + (chartBoxWidth + 2) * 2, yPos);
+    // Add all three charts vertically in left column
+    addChartBox(trade.chart1D, '1) 1D', chartY);
+    chartY += chartBoxHeight + chartSpacing;
+    addChartBox(trade.chart4H, '2) 4H', chartY);
+    chartY += chartBoxHeight + chartSpacing;
+    addChartBox(trade.chart15M, '3) 15M', chartY);
+    chartY += chartBoxHeight + chartSpacing;
 
-    yPos += chartBoxHeight + 5;
-
-    // ============ TRADE INFO SECTION ============
-    pdf.setFontSize(10);
-    pdf.setFont(undefined, 'bold');
-    pdf.text('TRADE INFORMATION', margin, yPos);
-    yPos += 4;
-
-    pdf.setDrawColor(150, 150, 150);
-    pdf.line(margin, yPos - 1, pageWidth - margin, yPos - 1);
-
-    pdf.setFontSize(9);
-    const labelWidth = 30;
-    const colHeight = 4.5;
+    // ============ RIGHT COLUMN - TRADE INFO (COMPACT) ============
     let infoY = yPos;
+    pdf.setFontSize(8);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('TRADE INFO', infoColX, infoY);
+    infoY += 3;
 
-    // Two columns for trade info
-    const infoLeft = margin;
-    const infoRight = margin + (contentWidth / 2);
-
-    // Helper to add info line
-    const addInfoLine = (label: string, value: string, x: number, y: number) => {
+    pdf.setFontSize(6.5);
+    const infoLineHeight = 2.8;
+    
+    const addCompactInfo = (label: string, value: string, y: number) => {
       pdf.setFont(undefined, 'bold');
-      pdf.text(label, x, y);
+      pdf.text(label + ':', infoColX, y);
       pdf.setFont(undefined, 'normal');
-      pdf.text(value, x + labelWidth, y);
+      // Truncate long values
+      const truncValue = value.length > 12 ? value.substring(0, 12) + '.' : value;
+      pdf.text(truncValue, infoColX + 13, y);
+      return y + infoLineHeight;
     };
 
-    // Left column
-    addInfoLine('Day:', trade.day, infoLeft, infoY);
-    addInfoLine('Pair:', trade.pair, infoLeft, infoY + colHeight);
-    addInfoLine('Time:', trade.time || '—', infoLeft, infoY + colHeight * 2);
-    addInfoLine('Direction:', trade.direction, infoLeft, infoY + colHeight * 3);
-    addInfoLine('Strategy:', trade.entryModel, infoLeft, infoY + colHeight * 4);
-    addInfoLine('Confidence:', `${trade.confidence}%`, infoLeft, infoY + colHeight * 5);
+    infoY = addCompactInfo('Day', trade.day, infoY);
+    infoY = addCompactInfo('Pair', trade.pair, infoY);
+    infoY = addCompactInfo('Time', trade.time || '—', infoY);
+    infoY = addCompactInfo('Dir', trade.direction, infoY);
+    infoY = addCompactInfo('Strat', trade.entryModel.substring(0, 10), infoY);
+    infoY += 0.5;
+    infoY = addCompactInfo('Conf%', `${trade.confidence}`, infoY);
+    infoY = addCompactInfo('ExpRR', trade.expectedRR.toFixed(2), infoY);
+    infoY = addCompactInfo('ActRR', trade.actualRR.toFixed(2), infoY);
+    infoY = addCompactInfo('Risk%', `${trade.riskPercent.toFixed(1)}`, infoY);
+    infoY += 0.5;
+    infoY = addCompactInfo('Result', trade.result, infoY);
+    infoY = addCompactInfo('P&L', `$${Math.abs(trade.profitLoss).toFixed(0)}`, infoY);
+    infoY = addCompactInfo('Balance', `$${(trade.balance / 1000).toFixed(1)}k`, infoY);
 
-    // Right column
-    addInfoLine('Result:', trade.result, infoRight, infoY);
-    addInfoLine('Expected R:R:', trade.expectedRR.toFixed(2), infoRight, infoY + colHeight);
-    addInfoLine('Actual R:R:', trade.actualRR.toFixed(2), infoRight, infoY + colHeight * 2);
-    addInfoLine('Risk %:', `${trade.riskPercent.toFixed(2)}%`, infoRight, infoY + colHeight * 3);
-    addInfoLine('Profit/Loss:', `$${trade.profitLoss.toFixed(2)}`, infoRight, infoY + colHeight * 4);
-    addInfoLine('Balance:', `$${trade.balance.toFixed(2)}`, infoRight, infoY + colHeight * 5);
+    // Move to next section below content
+    yPos = Math.max(chartY, infoY) + 3;
 
-    yPos = infoY + colHeight * 6 + 2;
-
-    // ============ EMOTIONS SECTION ============
+    // ============ EMOTIONS SECTION (SMALL) ============
     if (trade.emotions) {
-      pdf.setFontSize(10);
+      pdf.setFontSize(7);
       pdf.setFont(undefined, 'bold');
-      pdf.text('EMOTIONS & MENTAL STATE', margin, yPos);
-      yPos += 3;
-
-      pdf.setDrawColor(150, 150, 150);
-      pdf.line(margin, yPos, pageWidth - margin, yPos);
+      pdf.text('EMOTIONS:', margin, yPos);
       yPos += 2;
 
-      pdf.setFontSize(8);
+      pdf.setFontSize(6);
       pdf.setFont(undefined, 'normal');
       const emotionsLines = pdf.splitTextToSize(trade.emotions, contentWidth - 2);
-      emotionsLines.slice(0, 2).forEach((line: string) => {
+      emotionsLines.slice(0, 1).forEach((line: string) => {
         pdf.text(line, margin, yPos);
-        yPos += 3.5;
+        yPos += 2;
       });
-      yPos += 2;
+      yPos += 1;
     }
 
-    // ============ LARGE NOTES SECTION ============
-    const notesStartY = yPos;
-    const notesHeight = pageHeight - margin - notesStartY - 5;
-
-    pdf.setFontSize(10);
+    // ============ NOTES SECTION - 5 LINES FOR WRITING ============
+    pdf.setFontSize(8);
     pdf.setFont(undefined, 'bold');
-    pdf.text('NOTES', margin, notesStartY);
+    pdf.text('NOTES:', margin, yPos);
+    yPos += 2.5;
 
     // Notes box with border
     pdf.setDrawColor(100, 100, 100);
-    pdf.setLineWidth(0.5);
-    pdf.rect(margin, notesStartY + 3, contentWidth, notesHeight);
+    pdf.setLineWidth(0.4);
+    const notesBoxHeight = 5 * 4.5; // 5 lines, each 4.5mm apart
+    pdf.rect(margin, yPos, contentWidth, notesBoxHeight);
 
-    // Add notebook-style lines
-    pdf.setDrawColor(220, 220, 220);
-    pdf.setLineWidth(0.2);
-    const lineSpacing = 5;
-    for (let i = notesStartY + 8; i < notesStartY + 3 + notesHeight; i += lineSpacing) {
-      pdf.line(margin + 2, i, pageWidth - margin - 2, i);
+    // Add 5 horizontal lines for writing/drawing
+    pdf.setDrawColor(200, 200, 200);
+    pdf.setLineWidth(0.15);
+    const lineSpacing = 4.5;
+    for (let i = 0; i < 5; i++) {
+      const lineY = yPos + 2 + (i * lineSpacing);
+      pdf.line(margin + 2, lineY, pageWidth - margin - 2, lineY);
     }
 
-    // Add notes text
+    // Add notes text if exists (small, upper area)
     if (trade.notes) {
-      pdf.setFontSize(8);
+      pdf.setFontSize(6);
       pdf.setFont(undefined, 'normal');
       const notesLines = pdf.splitTextToSize(trade.notes, contentWidth - 4);
-      let notesTextY = notesStartY + 6;
+      let notesTextY = yPos + 1.5;
       
-      notesLines.forEach((line: string) => {
-        if (notesTextY < notesStartY + 3 + notesHeight - 3) {
+      notesLines.slice(0, 3).forEach((line: string) => {
+        if (notesTextY < yPos + notesBoxHeight - 2) {
           pdf.text(line, margin + 2, notesTextY);
           notesTextY += lineSpacing;
         }
