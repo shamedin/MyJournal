@@ -59,36 +59,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Hero Section - Opening Statement */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-primary/5 to-transparent">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <div className="space-y-4">
-            <p className="text-lg text-primary font-semibold">Master the Forex Markets</p>
-            <h1 className="text-5xl lg:text-6xl font-bold text-balance leading-tight">
-              Accelerate Your Forex Trading Journey
-            </h1>
-            <p className="text-xl text-muted-foreground text-balance leading-relaxed">
-              Track every trade with precision, analyze your performance, and master the psychology of profitable trading. Your trading journal is your edge in the forex market.
-            </p>
-          </div>
-          
-          <div className="flex gap-4 justify-center flex-wrap pt-4">
-            <Link href="/journal">
-              <Button size="lg" className="gap-2">
-                <BookOpen className="w-5 h-5" />
-                Log Your Trades
-              </Button>
-            </Link>
-            <Link href="/statistics">
-              <Button size="lg" variant="outline" className="gap-2">
-                <Brain className="w-5 h-5" />
-                View Statistics
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Daily Motivation Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
