@@ -101,7 +101,7 @@ export function JournalLayout({ trade, onDelete }: JournalLayoutProps) {
                 <img 
                   src={trade.chart1D} 
                   alt="1D Chart"
-                  className="w-full h-40 object-cover rounded-lg"
+                  className="w-full h-20 object-cover rounded-lg"
                 />
               </Card>
             )}
@@ -113,7 +113,7 @@ export function JournalLayout({ trade, onDelete }: JournalLayoutProps) {
                 <img 
                   src={trade.chart4H} 
                   alt="4H Chart"
-                  className="w-full h-40 object-cover rounded-lg"
+                  className="w-full h-20 object-cover rounded-lg"
                 />
               </Card>
             )}
@@ -125,7 +125,7 @@ export function JournalLayout({ trade, onDelete }: JournalLayoutProps) {
                 <img 
                   src={trade.chart15M} 
                   alt="15M Chart"
-                  className="w-full h-40 object-cover rounded-lg"
+                  className="w-full h-20 object-cover rounded-lg"
                 />
               </Card>
             )}

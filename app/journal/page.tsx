@@ -5,9 +5,11 @@ import { TradeForm } from '@/components/trading-journal/TradeForm';
 import { JournalLayout } from '@/components/trading-journal/JournalLayout';
 import { Trade } from '@/lib/types';
 import { getTradesFromStorage } from '@/lib/storage';
+import { exportStatisticsAsPDF } from '@/lib/exports';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Download } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function JournalPage() {
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -29,6 +31,15 @@ export default function JournalPage() {
 
   const handleTradeDelete = (tradeId: string) => {
     setTrades(trades.filter(t => t.id !== tradeId));
+  };
+
+  const handleExportStatistics = async () => {
+    try {
+      await exportStatisticsAsPDF(trades);
+      toast.success('Statistics PDF exported successfully!');
+    } catch (error) {
+      toast.error('Failed to export statistics');
+    }
   };
 
   return (
@@ -53,9 +64,19 @@ export default function JournalPage() {
           <div className="space-y-4">
             <div className="flex justify-between items-center border-b border-border pb-4">
               <h2 className="text-xl font-bold">RECENT TRADES</h2>
-              <span className="text-xs text-muted-foreground font-semibold">
-                {trades.length} total
-              </span>
+              <div className="flex items-center gap-4">
+                <span className="text-xs text-muted-foreground font-semibold">
+                  {trades.length} total
+                </span>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleExportStatistics}
+                >
+                  <Download className="w-4 h-4 mr-1" />
+                  Export Stats
+                </Button>
+              </div>
             </div>
 
             <div className="space-y-3">

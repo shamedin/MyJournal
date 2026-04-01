@@ -1,5 +1,5 @@
 import { Trade } from './types';
-import { formatRRRatio } from './calculations';
+import { formatRRRatio, calculateStatistics, getStrategyBreakdown } from './calculations';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import * as XLSX from 'xlsx';
@@ -25,7 +25,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
 
     // ============ HEADER SECTION ============
     pdf.setFontSize(18);
-    pdf.setFont(undefined, 'bold', 'underline');
+    pdf.setFont(undefined, 'bold');
     pdf.text('TRADING JOURNAL', margin, yPos);
     yPos += 7;
 
@@ -275,6 +275,139 @@ export async function exportSingleTradeAsExcel(trade: Trade): Promise<void> {
     XLSX.writeFile(wb, `trade-${trade.tradeIdOfTotal}-${trade.date}.xlsx`);
   } catch (error) {
     console.error('Excel export error:', error);
+    throw error;
+  }
+}
+
+export async function exportStatisticsAsPDF(trades: Trade[]): Promise<void> {
+  try {
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+    });
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+    const contentWidth = pageWidth - (margin * 2);
+
+    // White background
+    pdf.setFillColor(255, 255, 255);
+    pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+
+    let yPos = margin;
+
+    // ============ HEADER ============
+    pdf.setFontSize(24);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('TRADING STATISTICS', margin, yPos);
+    yPos += 10;
+
+    const stats = calculateStatistics(trades);
+    const dateRange = trades.length > 0 
+      ? `${new Date(Math.min(...trades.map(t => new Date(t.date).getTime()))).toLocaleDateString()} - ${new Date(Math.max(...trades.map(t => new Date(t.date).getTime()))).toLocaleDateString()}`
+      : 'N/A';
+
+    pdf.setFontSize(11);
+    pdf.setFont(undefined, 'normal');
+    pdf.text(`Period: ${dateRange}`, margin, yPos);
+    yPos += 7;
+
+    // Header line
+    pdf.setDrawColor(100, 100, 100);
+    pdf.line(margin, yPos, pageWidth - margin, yPos);
+    yPos += 8;
+
+    // ============ SUMMARY STATS ============
+    pdf.setFontSize(13);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('SUMMARY', margin, yPos);
+    yPos += 7;
+
+    const summaryData = [
+      ['Total Trades', stats.totalTrades.toString()],
+      ['Winning Trades', `${stats.winCount} (${stats.winRate.toFixed(1)}%)`],
+      ['Losing Trades', `${stats.lossCount} (${(100 - stats.winRate).toFixed(1)}%)`],
+      ['Total Profit/Loss', `$${stats.totalProfit.toFixed(2)}`],
+    ];
+
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'normal');
+    summaryData.forEach(([label, value], idx) => {
+      pdf.text(label, margin, yPos);
+      pdf.text(value, margin + contentWidth - 40, yPos, { align: 'right' });
+      yPos += 6;
+    });
+
+    yPos += 4;
+
+    // ============ PERFORMANCE METRICS ============
+    pdf.setFontSize(13);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('PERFORMANCE METRICS', margin, yPos);
+    yPos += 7;
+
+    const performanceData = [
+      ['Average Win', `$${stats.averageWin.toFixed(2)}`],
+      ['Average Loss', `$${stats.averageLoss.toFixed(2)}`],
+      ['Largest Win', `$${stats.largestWin.toFixed(2)}`],
+      ['Largest Loss', `$${Math.abs(stats.largestLoss).toFixed(2)}`],
+      ['Profit Factor', stats.profitFactor === Infinity ? '∞' : stats.profitFactor.toFixed(2)],
+      ['Average R:R', formatRRRatio(stats.averageRR)],
+    ];
+
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'normal');
+    performanceData.forEach(([label, value]) => {
+      pdf.text(label, margin, yPos);
+      pdf.text(value, margin + contentWidth - 40, yPos, { align: 'right' });
+      yPos += 6;
+    });
+
+    yPos += 4;
+
+    // ============ STRATEGY BREAKDOWN ============
+    if (trades.length > 0) {
+      const breakdown = getStrategyBreakdown(trades);
+      
+      if (breakdown.length > 0) {
+        pdf.setFontSize(13);
+        pdf.setFont(undefined, 'bold');
+        pdf.text('STRATEGY BREAKDOWN', margin, yPos);
+        yPos += 7;
+
+        pdf.setFontSize(9);
+        pdf.setFont(undefined, 'bold');
+        pdf.text('Strategy', margin, yPos);
+        pdf.text('Trades', margin + contentWidth - 50, yPos, { align: 'center' });
+        pdf.text('Win Rate', margin + contentWidth - 10, yPos, { align: 'center' });
+        yPos += 5;
+
+        // Separator line
+        pdf.setDrawColor(200, 200, 200);
+        pdf.line(margin, yPos, pageWidth - margin, yPos);
+        yPos += 4;
+
+        pdf.setFont(undefined, 'normal');
+        breakdown.forEach(({ strategy, count, winRate }) => {
+          if (yPos > pageHeight - 15) {
+            pdf.addPage();
+            yPos = margin;
+          }
+          pdf.text(strategy, margin, yPos);
+          pdf.text(count.toString(), margin + contentWidth - 50, yPos, { align: 'center' });
+          pdf.text(`${winRate.toFixed(1)}%`, margin + contentWidth - 10, yPos, { align: 'center' });
+          yPos += 5;
+        });
+      }
+    }
+
+    // Save PDF
+    const fileName = `trading-statistics-${new Date().toISOString().split('T')[0]}.pdf`;
+    pdf.save(fileName);
+  } catch (error) {
+    console.error('Statistics PDF export error:', error);
     throw error;
   }
 }
