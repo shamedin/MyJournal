@@ -9,11 +9,7 @@ import { getTradesFromStorage } from '@/lib/storage';
 
 export default function Home() {
   const [journalCount, setJournalCount] = useState(0);
-
-  useEffect(() => {
-    const trades = getTradesFromStorage();
-    setJournalCount(trades.length);
-  }, []);
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
 
   const teachings = [
     {
@@ -57,8 +53,33 @@ export default function Home() {
     },
   ];
 
-  return (
+  useEffect(() => {
+    const trades = getTradesFromStorage();
+    setJournalCount(trades.length);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentQuoteIndex((prev) => (prev + 1) % motivations.length);
+    }, 60000); // Change every 60 seconds
+    return () => clearInterval(interval);
+  }, [motivations.length]);
     <main className="min-h-screen bg-background">
+      {/* Rotating Quote Section - Changes Every Minute */}
+      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-b border-primary/20">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="space-y-3 animate-in fade-in duration-500">
+            <p className="text-sm font-semibold text-primary uppercase tracking-wide">Thought of the Minute</p>
+            <p className="text-2xl lg:text-3xl font-bold text-balance leading-tight">
+              "{motivations[currentQuoteIndex].quote}"
+            </p>
+            <p className="text-lg text-muted-foreground italic">
+              {motivations[currentQuoteIndex].insight}
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Daily Motivation Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
