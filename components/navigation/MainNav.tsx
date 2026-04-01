@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Moon, Sun, BookOpen, BarChart3, History, Combine } from 'lucide-react';
+import { OfflineIndicator } from '@/components/OfflineIndicator';
 
 export function MainNav() {
   const pathname = usePathname();
@@ -75,7 +76,8 @@ export function MainNav() {
           </div>
 
           {/* Dark Mode Toggle */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            <OfflineIndicator />
             {mounted && (
               <Button
                 variant="ghost"

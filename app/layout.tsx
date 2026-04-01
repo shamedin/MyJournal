@@ -1,8 +1,9 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { MainNav } from '@/components/navigation/MainNav'
 import { Toaster } from 'sonner'
+import { PWAInitializer } from '@/components/PWAInitializer'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -12,6 +13,15 @@ export const metadata: Metadata = {
   title: 'TradeLog - Trading Journal',
   description: 'A professional trading journal app to log and track your trades',
   generator: 'v0.app',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'TradeLog',
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
     icon: [
       {
@@ -29,6 +39,17 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' },
+  ],
 }
 
 export default function RootLayout({
@@ -55,6 +76,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
+        <PWAInitializer />
         <MainNav />
         {children}
         <Toaster />
