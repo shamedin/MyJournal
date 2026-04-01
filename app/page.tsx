@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { BookOpen, BarChart3, Download, TrendingUp, Merge3 } from 'lucide-react';
+import { BookOpen, BarChart3, Download, TrendingUp, Merge2 } from 'lucide-react';
 import { getTradesFromStorage } from '@/lib/storage';
 import { calculateStatistics } from '@/lib/calculations';
 
@@ -41,7 +41,7 @@ export default function Home() {
       href: '/journal',
     },
     {
-      icon: Merge3,
+      icon: Merge2,
       title: 'PDF Merger',
       description: 'Merge multiple PDFs, reorder pages, and export as a single document.',
       href: '/pdf-merger',
