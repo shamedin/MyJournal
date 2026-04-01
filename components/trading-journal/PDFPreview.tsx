@@ -17,152 +17,111 @@ export function PDFPreview({ trade }: PDFPreviewProps) {
   });
 
   return (
-    <div className="bg-white text-black p-8 rounded-lg shadow-lg space-y-6">
+    <div className="bg-white text-black p-4 rounded-lg space-y-3 max-h-96 overflow-y-auto text-xs">
       {/* Header */}
-      <div className="border-b pb-4">
-        <h1 className="text-2xl font-bold">TRADING JOURNAL</h1>
-        <p className="text-sm mt-2">DATE: {dateStr}</p>
-        <div className="text-sm mt-2 space-y-1">
-          <p>Trade ID of Total Trades: {trade.tradeIdOfTotal}</p>
-          <p>Trade ID from Today: {trade.tradeIdFromToday}</p>
+      <div className="pb-2 border-b-2 border-gray-400">
+        <h1 className="text-lg font-bold">TRADING JOURNAL</h1>
+        <p className="text-xs mt-1">DATE: {dateStr}</p>
+        <div className="text-xs mt-1 grid grid-cols-2 gap-4">
+          <p>Trade ID (Total): {trade.tradeIdOfTotal}</p>
+          <p>Trade ID (Today): {trade.tradeIdFromToday}</p>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="grid grid-cols-3 gap-6">
-        {/* Left Column - Charts */}
-        <div className="col-span-1 space-y-4">
-          <h3 className="font-bold text-sm">SCREENSHOTS</h3>
-
+      {/* Charts Section - 3 columns */}
+      <div>
+        <h3 className="font-bold text-xs mb-2">SCREENSHOTS</h3>
+        <div className="grid grid-cols-3 gap-2">
           {/* 1D Chart */}
-          <div className="border border-gray-300 p-2">
-            <p className="text-xs font-semibold mb-2">1) 1D</p>
+          <div className="border border-gray-300 p-1">
+            <p className="text-xs font-semibold mb-1">1D</p>
             {trade.chart1D ? (
               <img 
                 src={trade.chart1D} 
                 alt="1D Chart"
-                className="w-full h-32 object-cover"
+                className="w-full h-20 object-contain bg-gray-50"
               />
             ) : (
-              <div className="w-full h-32 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
-                No image
+              <div className="w-full h-20 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+                —
               </div>
             )}
           </div>
 
           {/* 4H Chart */}
-          <div className="border border-gray-300 p-2">
-            <p className="text-xs font-semibold mb-2">2) 4H</p>
+          <div className="border border-gray-300 p-1">
+            <p className="text-xs font-semibold mb-1">4H</p>
             {trade.chart4H ? (
               <img 
                 src={trade.chart4H} 
                 alt="4H Chart"
-                className="w-full h-32 object-cover"
+                className="w-full h-20 object-contain bg-gray-50"
               />
             ) : (
-              <div className="w-full h-32 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
-                No image
+              <div className="w-full h-20 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+                —
               </div>
             )}
           </div>
 
           {/* 15M Chart */}
-          <div className="border border-gray-300 p-2">
-            <p className="text-xs font-semibold mb-2">3) 15M</p>
+          <div className="border border-gray-300 p-1">
+            <p className="text-xs font-semibold mb-1">15M</p>
             {trade.chart15M ? (
               <img 
                 src={trade.chart15M} 
                 alt="15M Chart"
-                className="w-full h-32 object-cover"
+                className="w-full h-20 object-contain bg-gray-50"
               />
             ) : (
-              <div className="w-full h-32 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
-                No image
+              <div className="w-full h-20 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+                —
               </div>
             )}
           </div>
         </div>
+      </div>
 
-        {/* Right Column - Trade Details */}
-        <div className="col-span-2 space-y-3 text-sm">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <p className="font-semibold">DAY:</p>
-              <p className="text-xs mt-1">{trade.day}</p>
-            </div>
-            <div>
-              <p className="font-semibold">PAIR:</p>
-              <p className="text-xs mt-1">{trade.pair}</p>
-            </div>
+      {/* Trade Information - 2 columns */}
+      <div className="border-t pt-2">
+        <h3 className="font-bold text-xs mb-2">TRADE INFORMATION</h3>
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          {/* Left Column */}
+          <div className="space-y-1">
+            <div><span className="font-semibold">Day:</span> {trade.day}</div>
+            <div><span className="font-semibold">Pair:</span> {trade.pair}</div>
+            <div><span className="font-semibold">Time:</span> {trade.time || '—'}</div>
+            <div><span className="font-semibold">Direction:</span> {trade.direction}</div>
+            <div><span className="font-semibold">Strategy:</span> {trade.entryModel}</div>
+            <div><span className="font-semibold">Confidence:</span> {trade.confidence}%</div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <p className="font-semibold">TIME:</p>
-              <p className="text-xs mt-1">{trade.time || '—'}</p>
-            </div>
-            <div>
-              <p className="font-semibold">BUY/SELL:</p>
-              <p className="text-xs mt-1">{trade.direction}</p>
-            </div>
-          </div>
-
-          <div>
-            <p className="font-semibold">ENTRY MODEL:</p>
-            <p className="text-xs mt-1">{trade.entryModel}</p>
-          </div>
-
-          <div>
-            <p className="font-semibold">EMOTIONS:</p>
-            <p className="text-xs mt-1 whitespace-pre-wrap">{trade.emotions || '—'}</p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <p className="font-semibold">CONFIDENCE:</p>
-              <p className="text-xs mt-1">{trade.confidence}%</p>
-            </div>
-            <div>
-              <p className="font-semibold">EXPECTED R:R:</p>
-              <p className="text-xs mt-1">{trade.expectedRR.toFixed(2)}</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <p className="font-semibold">ACTUAL R:R:</p>
-              <p className="text-xs mt-1">{trade.actualRR.toFixed(2)}</p>
-            </div>
-            <div>
-              <p className="font-semibold">RISK %:</p>
-              <p className="text-xs mt-1">{trade.riskPercent.toFixed(2)}%</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <p className="font-semibold">RESULT:</p>
-              <p className="text-xs mt-1">{trade.result}</p>
-            </div>
-            <div>
-              <p className="font-semibold">PROFIT/LOSS:</p>
-              <p className="text-xs mt-1">${trade.profitLoss.toFixed(2)}</p>
-            </div>
-          </div>
-
-          <div>
-            <p className="font-semibold">BALANCE:</p>
-            <p className="text-xs mt-1">${trade.balance.toFixed(2)}</p>
+          {/* Right Column */}
+          <div className="space-y-1">
+            <div><span className="font-semibold">Result:</span> {trade.result}</div>
+            <div><span className="font-semibold">Expected R:R:</span> {trade.expectedRR.toFixed(2)}</div>
+            <div><span className="font-semibold">Actual R:R:</span> {trade.actualRR.toFixed(2)}</div>
+            <div><span className="font-semibold">Risk %:</span> {trade.riskPercent.toFixed(2)}%</div>
+            <div><span className="font-semibold">P&L:</span> ${trade.profitLoss.toFixed(2)}</div>
+            <div><span className="font-semibold">Balance:</span> ${trade.balance.toFixed(2)}</div>
           </div>
         </div>
       </div>
 
+      {/* Emotions Section */}
+      {trade.emotions && (
+        <div className="border-t pt-2">
+          <h3 className="font-bold text-xs mb-1">EMOTIONS</h3>
+          <p className="text-xs whitespace-pre-wrap line-clamp-2">{trade.emotions}</p>
+        </div>
+      )}
+
       {/* Notes Section */}
       {trade.notes && (
-        <div className="border-t pt-4">
-          <h3 className="font-bold text-sm mb-2">NOTES:</h3>
-          <div className="border border-gray-300 p-3 min-h-24">
-            <p className="text-xs whitespace-pre-wrap">{trade.notes}</p>
+        <div className="border-t pt-2">
+          <h3 className="font-bold text-xs mb-1">NOTES</h3>
+          <div className="border border-gray-300 p-2 min-h-16 bg-gray-50">
+            <p className="text-xs whitespace-pre-wrap line-clamp-3">{trade.notes}</p>
           </div>
         </div>
       )}
