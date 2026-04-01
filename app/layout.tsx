@@ -9,8 +9,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'TradeLog - Trading Journal',
-  description: 'A professional trading journal app to log and track your trades',
+  title: 'My Journal - Personal Growth & Self-Discovery',
+  description: 'Your personal sanctuary for psychological growth, mental clarity, and self-improvement through journaling, reflection, and wisdom',
   generator: 'v0.app',
   icons: {
     icon: [

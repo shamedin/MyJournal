@@ -4,46 +4,41 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { BookOpen, BarChart3, Download, TrendingUp, Combine } from 'lucide-react';
+import { BookOpen, Brain, Lightbulb, Heart, Zap, Compass } from 'lucide-react';
 import { getTradesFromStorage } from '@/lib/storage';
 import { calculateStatistics } from '@/lib/calculations';
 
 export default function Home() {
-  const [stats, setStats] = useState({ totalTrades: 0, winRate: 0, totalProfit: 0 });
+  const [journalCount, setJournalCount] = useState(0);
 
   useEffect(() => {
     const trades = getTradesFromStorage();
-    const stats = calculateStatistics(trades);
-    setStats({
-      totalTrades: stats.totalTrades,
-      winRate: stats.winRate,
-      totalProfit: stats.totalProfit,
-    });
+    setJournalCount(trades.length);
   }, []);
 
   const features = [
     {
       icon: BookOpen,
-      title: 'Trade Journal',
-      description: 'Log your trades with detailed information including charts, emotions, and notes.',
+      title: 'Personal Journal',
+      description: 'Reflect on your thoughts, emotions, and personal growth. Track your mental and emotional well-being.',
       href: '/journal',
     },
     {
-      icon: BarChart3,
-      title: 'Statistics',
-      description: 'Analyze your trading performance with comprehensive charts and metrics.',
+      icon: Brain,
+      title: 'Self-Discovery',
+      description: 'Explore psychological insights about yourself and understand your patterns of behavior and thinking.',
       href: '/statistics',
     },
     {
-      icon: Download,
-      title: 'Export',
-      description: 'Export your trades as PDF or Excel for backup and analysis.',
+      icon: Lightbulb,
+      title: 'Teachings & Insights',
+      description: 'Access wisdom, spiritual teachings, and improvement strategies to enhance your mental clarity.',
       href: '/journal',
     },
     {
-      icon: Combine,
-      title: 'PDF Merger',
-      description: 'Merge multiple PDFs, reorder pages, and export as a single document.',
+      icon: Heart,
+      title: 'Emotional Growth',
+      description: 'Work on emotional intelligence, resilience, and mental health through guided practices.',
       href: '/pdf-merger',
     },
   ];
@@ -54,10 +49,10 @@ export default function Home() {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <h1 className="text-5xl lg:text-6xl font-bold text-balance">
-            Professional Trading Journal
+            My Journal
           </h1>
           <p className="text-xl text-muted-foreground text-balance">
-            Track, analyze, and improve your trading with a powerful, minimal trading journal. Keep records of every trade, review your psychology, and optimize your strategy.
+            Your personal sanctuary for psychological growth, mental clarity, and self-improvement. Explore your inner world, reflect on life's lessons, and transform through wisdom and teachings.
           </p>
           
           <div className="flex gap-4 justify-center flex-wrap">
@@ -69,33 +64,31 @@ export default function Home() {
             </Link>
             <Link href="/statistics">
               <Button size="lg" variant="outline" className="gap-2">
-                <BarChart3 className="w-5 h-5" />
-                View Statistics
+                <Brain className="w-5 h-5" />
+                Explore Insights
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      {stats.totalTrades > 0 && (
+      {/* Progress Section */}
+      {journalCount > 0 && (
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">Your Trading Overview</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">Your Growth Journey</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="p-6 text-center">
-                <p className="text-muted-foreground text-sm font-medium">Total Trades</p>
-                <p className="text-4xl font-bold mt-2">{stats.totalTrades}</p>
+                <p className="text-muted-foreground text-sm font-medium">Journal Entries</p>
+                <p className="text-4xl font-bold mt-2">{journalCount}</p>
               </Card>
               <Card className="p-6 text-center">
-                <p className="text-muted-foreground text-sm font-medium">Win Rate</p>
-                <p className="text-4xl font-bold mt-2 text-green-600">{stats.winRate.toFixed(1)}%</p>
+                <p className="text-muted-foreground text-sm font-medium">Self-Reflection</p>
+                <p className="text-4xl font-bold mt-2 text-blue-600">Active</p>
               </Card>
               <Card className="p-6 text-center">
-                <p className="text-muted-foreground text-sm font-medium">Total P&L</p>
-                <p className={`text-4xl font-bold mt-2 ${stats.totalProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  ${stats.totalProfit.toFixed(2)}
-                </p>
+                <p className="text-muted-foreground text-sm font-medium">Growth Status</p>
+                <p className="text-4xl font-bold mt-2 text-green-600">In Progress</p>
               </Card>
             </div>
           </div>
@@ -106,8 +99,8 @@ export default function Home() {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold">Powerful Features</h2>
-            <p className="text-xl text-muted-foreground">Everything you need to become a better trader</p>
+            <h2 className="text-4xl font-bold">Powerful Features for Growth</h2>
+            <p className="text-xl text-muted-foreground">Everything you need for psychological well-being and personal transformation</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -130,14 +123,14 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-primary text-primary-foreground rounded-lg mx-4 mb-20">
         <div className="max-w-3xl mx-auto text-center space-y-6">
-          <h2 className="text-3xl font-bold">Ready to Improve Your Trading?</h2>
+          <h2 className="text-3xl font-bold">Ready to Elevate Your Life?</h2>
           <p className="text-lg opacity-90">
-            Start tracking your trades today and gain the insights you need to become a consistently profitable trader.
+            Begin your journey of self-discovery, mental clarity, and personal growth today. Transform your life through reflection, wisdom, and intentional growth.
           </p>
           <Link href="/journal">
             <Button size="lg" variant="secondary" className="gap-2">
               <BookOpen className="w-5 h-5" />
-              Begin Your Journal
+              Begin Your Journey
             </Button>
           </Link>
         </div>
@@ -146,8 +139,8 @@ export default function Home() {
       {/* Footer */}
       <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-border">
         <div className="max-w-6xl mx-auto text-center text-muted-foreground text-sm">
-          <p>TradeLog - A professional trading journal for serious traders</p>
-          <p className="mt-2">All data is stored locally in your browser. No server storage.</p>
+          <p>My Journal - Your personal space for growth, reflection, and transformation</p>
+          <p className="mt-2">All data is stored locally in your browser. Your privacy is protected.</p>
         </div>
       </footer>
     </main>
