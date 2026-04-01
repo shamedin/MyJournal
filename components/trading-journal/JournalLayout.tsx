@@ -1,12 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Trade } from '@/lib/types';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, Trash2 } from 'lucide-react';
+import { Download, Trash2, Eye, X } from 'lucide-react';
 import { exportTradeAsPDF, exportSingleTradeAsExcel } from '@/lib/exports';
 import { deleteTradeFromStorage } from '@/lib/storage';
+import { PDFPreview } from './PDFPreview';
 import { toast } from 'sonner';
 
 interface JournalLayoutProps {
@@ -15,6 +16,8 @@ interface JournalLayoutProps {
 }
 
 export function JournalLayout({ trade, onDelete }: JournalLayoutProps) {
+  const [showPreview, setShowPreview] = useState(false);
+
   const handleDeleteTrade = () => {
     if (confirm('Are you sure you want to delete this trade?')) {
       deleteTradeFromStorage(trade.id);
@@ -25,7 +28,7 @@ export function JournalLayout({ trade, onDelete }: JournalLayoutProps) {
 
   const handlePDFExport = async () => {
     try {
-      await exportTradeAsPDF(trade.tradeIdOfTotal.toString(), `journal-${trade.id}`);
+      await exportTradeAsPDF(trade);
       toast.success('PDF exported successfully!');
     } catch (error) {
       toast.error('Failed to export PDF');
@@ -50,6 +53,14 @@ export function JournalLayout({ trade, onDelete }: JournalLayoutProps) {
           <p className="text-muted-foreground text-sm">{trade.date} • {trade.day}</p>
         </div>
         <div className="flex gap-2">
+          <Button 
+            size="sm" 
+            variant="outline"
+            onClick={() => setShowPreview(true)}
+          >
+            <Eye className="w-4 h-4 mr-1" />
+            Preview
+          </Button>
           <Button 
             size="sm" 
             variant="outline"
@@ -235,6 +246,27 @@ export function JournalLayout({ trade, onDelete }: JournalLayoutProps) {
             ))}
           </div>
         </Card>
+      )}
+
+      {/* PDF Preview Modal */}
+      {showPreview && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-background rounded-lg max-w-4xl max-h-96 overflow-auto w-full">
+            <div className="sticky top-0 bg-background border-b p-4 flex justify-between items-center">
+              <h3 className="font-semibold">PDF Preview</h3>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setShowPreview(false)}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+            <div className="p-4">
+              <PDFPreview trade={trade} />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

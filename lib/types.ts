@@ -1,7 +1,7 @@
 export interface Trade {
   id: string;
   tradeIdOfTotal: number;
-  tradeIdOfDay: number;
+  tradeIdFromToday: number;
   date: string;
   
   // Charts/Screenshots

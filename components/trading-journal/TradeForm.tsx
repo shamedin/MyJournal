@@ -64,7 +64,7 @@ export function TradeForm({ onTradeSubmit }: TradeFormProps) {
     const trade: Trade = {
       id: `${Date.now()}-${Math.random()}`,
       tradeIdOfTotal: ids.totalId,
-      tradeIdOfDay: ids.dayId,
+      tradeIdFromToday: ids.dayId,
       date: formData.date || new Date().toISOString().split('T')[0],
       day: formData.day || getDayName(new Date()),
       pair: formData.pair || '',

@@ -22,9 +22,10 @@ A clean, minimal trading journal web app built with Next.js 16 that runs entirel
 - **Trade History**: Browse all trades with filtering and search
 - **Filter Options**: Filter by pair, result (win/loss), and strategy
 - **Export Functions**:
-  - Export individual trades as PDF (captures the journal layout)
-  - Export all trades as Excel spreadsheet with summary sheet
-  - Individual trade Excel exports
+  - **PDF Export**: Export trades as professional printable PDFs matching your journal template layout with all chart images
+  - **PDF Preview**: Preview how your trade will look in PDF format before exporting
+  - **Excel Export**: Export all trades as Excel spreadsheet with summary sheet
+  - **Individual Exports**: Export single trades as PDF or Excel
 
 ### UI Features
 - **Dark Mode**: Built-in dark/light mode toggle with system preference detection
@@ -146,12 +147,16 @@ lib/
 ### Exporting Data
 
 **PDF Export** (Individual Trade):
-- View a trade in the journal
-- Click the "PDF" button to download a printable journal sheet
+- Navigate to a trade in the journal entry or history page
+- Click the "Preview" button to see how your trade will look as a PDF (includes all chart images)
+- Click the "PDF" button to download a professional printable journal sheet that matches your handwritten template
+- The PDF includes: all 3 chart timeframes (1D, 4H, 15M), trade details, emotions, risk/reward metrics, and notes
+- PDFs are formatted for standard A4 paper printing
 
 **Excel Export**:
-- Individual trade: Click "Excel" button on a trade
-- All trades: Planned feature for bulk export
+- Individual trade: Click "Excel" button on a trade to export as spreadsheet
+- All trades: Use bulk export on history page to export entire trading journal with summary statistics
+- Includes all trade data: date, pair, direction, strategy, emotions, confidence, R:R, results, P&L, and notes
 
 ## Data Storage
 
