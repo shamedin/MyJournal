@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Moon, Sun, BookOpen, BarChart3, History } from 'lucide-react';
+import { Moon, Sun, BookOpen, BarChart3, History, Combine } from 'lucide-react';
 
 export function MainNav() {
   const pathname = usePathname();
@@ -40,6 +40,7 @@ export function MainNav() {
     { href: '/journal', label: 'Journal', icon: BookOpen },
     { href: '/statistics', label: 'Statistics', icon: BarChart3 },
     { href: '/history', label: 'History', icon: History },
+    { href: '/pdf-merger', label: 'PDF Merger', icon: Combine },
   ];
 
   return (
