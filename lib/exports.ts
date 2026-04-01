@@ -106,7 +106,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
 
     pdf.setFontSize(6.5);
     const infoLineHeight = 2.8;
-    
+
     const addCompactInfo = (label: string, value: string, y: number) => {
       pdf.setFont(undefined, 'bold');
       pdf.text(label + ':', infoColX, y);
@@ -140,9 +140,9 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
       pdf.setFontSize(7);
       pdf.setFont(undefined, 'bold');
       pdf.text('EMOTIONS:', margin, yPos);
-      yPos += 2;
+      yPos += 5;
 
-      pdf.setFontSize(6);
+      pdf.setFontSize(7);
       pdf.setFont(undefined, 'normal');
       const emotionsLines = pdf.splitTextToSize(trade.emotions, contentWidth - 2);
       emotionsLines.slice(0, 1).forEach((line: string) => {
@@ -179,7 +179,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
       pdf.setFont(undefined, 'normal');
       const notesLines = pdf.splitTextToSize(trade.notes, contentWidth - 4);
       let notesTextY = yPos + 1.5;
-      
+
       notesLines.slice(0, 3).forEach((line: string) => {
         if (notesTextY < yPos + notesBoxHeight - 2) {
           pdf.text(line, margin + 2, notesTextY);
