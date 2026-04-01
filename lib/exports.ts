@@ -24,7 +24,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
 
     // ============ HEADER SECTION ============
     pdf.setFontSize(18);
-    pdf.setFont(undefined, 'bold');
+    pdf.setFont(undefined, 'bold', 'underline');
     pdf.text('TRADING JOURNAL', margin, yPos);
     yPos += 7;
 
