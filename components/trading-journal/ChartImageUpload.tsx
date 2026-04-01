@@ -87,7 +87,7 @@ export function ChartImageUpload({ timeframe, imageSrc, onImageChange }: ChartIm
             }
           }}
           onClick={() => fileInputRef.current?.click()}
-          className="w-full h-80 border-2 border-dashed border-border rounded flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors cursor-pointer text-[10px]"
+          className="w-full h-40 border-2 border-dashed border-border rounded flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors cursor-pointer text-[10px]"
         >
           <Upload className="w-5 h-5 text-muted-foreground" />
           <span className="text-muted-foreground text-center px-2">
