@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { BookOpen, Brain, Lightbulb, Heart } from 'lucide-react';
+import { BookOpen, Brain, Lightbulb } from 'lucide-react';
 import { getTradesFromStorage } from '@/lib/storage';
 
 export default function Home() {
@@ -68,7 +68,7 @@ export default function Home() {
               Transform Your Life Through Self-Discovery and Growth
             </h1>
             <p className="text-xl text-muted-foreground text-balance leading-relaxed">
-              This is your sacred space for reflection, learning, and personal evolution. Here, you'll explore the depths of your psyche, discover your true potential, and build a life of meaning and purpose.
+              This is your sacred space for reflection, learning, and personal evolution. Here, you&apos;ll explore the depths of your psyche, discover your true potential, and build a life of meaning and purpose.
             </p>
           </div>
           
@@ -96,7 +96,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {motivations.map((item, idx) => (
               <Card key={idx} className="p-6 border-l-4 border-l-primary hover:shadow-lg transition-shadow">
-                <p className="text-lg font-semibold text-primary italic mb-4">"{item.quote}"</p>
+                <p className="text-lg font-semibold text-primary italic mb-4">&quot;{item.quote}&quot;</p>
                 <p className="text-muted-foreground">{item.insight}</p>
               </Card>
             ))}
