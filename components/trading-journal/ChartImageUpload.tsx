@@ -25,6 +25,25 @@ export function ChartImageUpload({ timeframe, imageSrc, onImageChange }: ChartIm
     reader.readAsDataURL(file);
   };
 
+  const handlePaste = (event: React.ClipboardEvent<HTMLButtonElement>) => {
+    const items = event.clipboardData?.items;
+    if (!items) return;
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        const blob = items[i].getAsFile();
+        if (blob) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const base64 = e.target?.result as string;
+            onImageChange(base64);
+          };
+          reader.readAsDataURL(blob);
+        }
+      }
+    }
+  };
+
   const handleRemove = () => {
     onImageChange('');
     if (fileInputRef.current) {
@@ -61,12 +80,18 @@ export function ChartImageUpload({ timeframe, imageSrc, onImageChange }: ChartIm
       ) : (
         <button
           type="button"
+          onPaste={handlePaste}
+          onKeyDown={(e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+              e.preventDefault();
+            }
+          }}
           onClick={() => fileInputRef.current?.click()}
           className="w-full h-80 border-2 border-dashed border-border rounded flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors cursor-pointer text-[10px]"
         >
           <Upload className="w-5 h-5 text-muted-foreground" />
           <span className="text-muted-foreground text-center px-2">
-            Upload {timeframe}
+            Upload or Paste {timeframe}
           </span>
         </button>
       )}

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Trade, TradeFormData } from '@/lib/types';
 import { saveTradeToStorage, getNextTradeId, getFormDraftFromStorage, saveFormDraftToStorage } from '@/lib/storage';
+import { formatRRRatio } from '@/lib/calculations';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -78,6 +79,7 @@ export function TradeForm({ onTradeSubmit }: TradeFormProps) {
       result: formData.result as 'WIN' | 'LOSS' || 'WIN',
       profitLoss: formData.profitLoss || 0,
       balance: formData.balance || 0,
+      initialBalance: formData.initialBalance || 0,
       notes: formData.notes || '',
       tags: (formData.tags || '').split(',').filter(t => t.trim()),
       chart1D: formData.chart1D || '',
@@ -120,19 +122,19 @@ export function TradeForm({ onTradeSubmit }: TradeFormProps) {
           <div>
             <Label className="text-xs font-semibold text-muted-foreground">Trade ID of Total Trades:</Label>
             <Input
-              type="text"
+              type="number"
               value={ids.totalId}
-              disabled
-              className="bg-muted mt-1 font-mono font-bold"
+              onChange={(e) => setIds({ ...ids, totalId: parseInt(e.target.value) || 0 })}
+              className="mt-1 font-mono font-bold"
             />
           </div>
           <div>
             <Label className="text-xs font-semibold text-muted-foreground">Trade ID from Today:</Label>
             <Input
-              type="text"
+              type="number"
               value={ids.dayId}
-              disabled
-              className="bg-muted mt-1 font-mono font-bold"
+              onChange={(e) => setIds({ ...ids, dayId: parseInt(e.target.value) || 0 })}
+              className="mt-1 font-mono font-bold"
             />
           </div>
         </div>
@@ -287,7 +289,9 @@ export function TradeForm({ onTradeSubmit }: TradeFormProps) {
             {/* Row 6: Risk/Reward */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="expectedRR" className="text-xs font-bold">EXPECTED R:R:</Label>
+                <Label htmlFor="expectedRR" className="text-xs font-bold">
+                  EXPECTED R:R: {formData.expectedRR ? formatRRRatio(formData.expectedRR) : '—'}
+                </Label>
                 <Input
                   id="expectedRR"
                   type="number"
@@ -300,7 +304,9 @@ export function TradeForm({ onTradeSubmit }: TradeFormProps) {
                 />
               </div>
               <div>
-                <Label htmlFor="actualRR" className="text-xs font-bold">ACTUAL R:R:</Label>
+                <Label htmlFor="actualRR" className="text-xs font-bold">
+                  ACTUAL R:R: {formData.actualRR ? formatRRRatio(formData.actualRR) : '—'}
+                </Label>
                 <Input
                   id="actualRR"
                   type="number"
@@ -359,19 +365,34 @@ export function TradeForm({ onTradeSubmit }: TradeFormProps) {
               </div>
             </div>
 
-            {/* Row 9: Balance */}
-            <div>
-              <Label htmlFor="balance" className="text-xs font-bold">BALANCE:</Label>
-              <Input
-                id="balance"
-                type="number"
-                step="0.01"
-                name="balance"
-                placeholder="10000"
-                value={formData.balance || ''}
-                onChange={handleInputChange}
-                className="text-xs mt-1"
-              />
+            {/* Row 9: Initial Balance & Current Balance */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="initialBalance" className="text-xs font-bold">INITIAL BALANCE:</Label>
+                <Input
+                  id="initialBalance"
+                  type="number"
+                  step="0.01"
+                  name="initialBalance"
+                  placeholder="10000"
+                  value={formData.initialBalance || ''}
+                  onChange={handleInputChange}
+                  className="text-xs mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="balance" className="text-xs font-bold">CURRENT BALANCE:</Label>
+                <Input
+                  id="balance"
+                  type="number"
+                  step="0.01"
+                  name="balance"
+                  placeholder="10000"
+                  value={formData.balance || ''}
+                  onChange={handleInputChange}
+                  className="text-xs mt-1"
+                />
+              </div>
             </div>
           </div>
         </div>

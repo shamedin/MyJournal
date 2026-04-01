@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Trade } from '@/lib/types';
+import { formatRRRatio } from '@/lib/calculations';
 import { Card } from '@/components/ui/card';
 
 interface PDFPreviewProps {
@@ -93,12 +94,20 @@ export function PDFPreview({ trade }: PDFPreviewProps) {
             <div><span className="font-semibold">Dir:</span> <span className="text-xs">{trade.direction}</span></div>
             <div><span className="font-semibold">Strat:</span> <span className="text-xs">{trade.entryModel.substring(0, 8)}</span></div>
             <div className="border-t pt-0.5 mt-0.5"><span className="font-semibold">Conf%:</span> <span className="text-xs">{trade.confidence}</span></div>
-            <div><span className="font-semibold">ExpRR:</span> <span className="text-xs">{trade.expectedRR.toFixed(2)}</span></div>
-            <div><span className="font-semibold">ActRR:</span> <span className="text-xs">{trade.actualRR.toFixed(2)}</span></div>
+            <div><span className="font-semibold">ExpRR:</span> <span className="text-xs">{formatRRRatio(trade.expectedRR)}</span></div>
+            <div><span className="font-semibold">ActRR:</span> <span className="text-xs">{formatRRRatio(trade.actualRR)}</span></div>
             <div><span className="font-semibold">Risk%:</span> <span className="text-xs">{trade.riskPercent.toFixed(1)}</span></div>
             <div className="border-t pt-0.5 mt-0.5"><span className="font-semibold">Result:</span> <span className="text-xs">{trade.result}</span></div>
             <div><span className="font-semibold">P&L:</span> <span className="text-xs">${trade.profitLoss.toFixed(0)}</span></div>
-            <div><span className="font-semibold">Balance:</span> <span className="text-xs">${(trade.balance / 1000).toFixed(1)}k</span></div>
+            {trade.initialBalance > 0 && (
+              <>
+                <div><span className="font-semibold">InitBal:</span> <span className="text-xs">${(trade.initialBalance / 1000).toFixed(1)}k</span></div>
+                <div><span className="font-semibold">CurBal:</span> <span className="text-xs">${(trade.balance / 1000).toFixed(1)}k</span></div>
+              </>
+            )}
+            {(!trade.initialBalance || trade.initialBalance === 0) && (
+              <div><span className="font-semibold">Balance:</span> <span className="text-xs">${(trade.balance / 1000).toFixed(1)}k</span></div>
+            )}
           </div>
         </div>
       </div>

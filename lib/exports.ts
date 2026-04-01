@@ -1,4 +1,5 @@
 import { Trade } from './types';
+import { formatRRRatio } from './calculations';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import * as XLSX from 'xlsx';
@@ -65,7 +66,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     pdf.text('SCREENSHOTS', chartColX, chartY);
     chartY += 3;
 
-    const chartBoxHeight = 36;
+    const chartBoxHeight = 72;
     const chartSpacing = 1;
 
     // Helper to add chart with border in one column
@@ -124,13 +125,18 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     infoY = addCompactInfo('Strat', trade.entryModel.substring(0, 10), infoY);
     infoY += 0.5;
     infoY = addCompactInfo('Conf%', `${trade.confidence}`, infoY);
-    infoY = addCompactInfo('ExpRR', trade.expectedRR.toFixed(2), infoY);
-    infoY = addCompactInfo('ActRR', trade.actualRR.toFixed(2), infoY);
+    infoY = addCompactInfo('ExpRR', formatRRRatio(trade.expectedRR), infoY);
+    infoY = addCompactInfo('ActRR', formatRRRatio(trade.actualRR), infoY);
     infoY = addCompactInfo('Risk%', `${trade.riskPercent.toFixed(1)}`, infoY);
     infoY += 0.5;
     infoY = addCompactInfo('Result', trade.result, infoY);
     infoY = addCompactInfo('P&L', `$${Math.abs(trade.profitLoss).toFixed(0)}`, infoY);
-    infoY = addCompactInfo('Balance', `$${(trade.balance / 1000).toFixed(1)}k`, infoY);
+    if (trade.initialBalance > 0) {
+      infoY = addCompactInfo('InitBal', `$${(trade.initialBalance / 1000).toFixed(1)}k`, infoY);
+      infoY = addCompactInfo('CurBal', `$${(trade.balance / 1000).toFixed(1)}k`, infoY);
+    } else {
+      infoY = addCompactInfo('Balance', `$${(trade.balance / 1000).toFixed(1)}k`, infoY);
+    }
 
     // Move to next section below content
     yPos = Math.max(chartY, infoY) + 3;
@@ -207,12 +213,13 @@ export function exportAllTradesAsExcel(trades: Trade[]): void {
       'Direction': trade.direction,
       'Strategy': trade.entryModel,
       'Confidence': trade.confidence,
-      'Expected R:R': trade.expectedRR,
-      'Actual R:R': trade.actualRR,
+      'Expected R:R': formatRRRatio(trade.expectedRR),
+      'Actual R:R': formatRRRatio(trade.actualRR),
       'Risk %': trade.riskPercent,
       'Result': trade.result,
       'Profit/Loss': trade.profitLoss,
-      'Balance': trade.balance,
+      'Initial Balance': trade.initialBalance || '—',
+      'Current Balance': trade.balance,
       'Notes': trade.notes,
       'Tags': trade.tags.join(', '),
     }));
@@ -250,12 +257,13 @@ export async function exportSingleTradeAsExcel(trade: Trade): Promise<void> {
       'Direction': trade.direction,
       'Strategy': trade.entryModel,
       'Confidence': trade.confidence,
-      'Expected R:R': trade.expectedRR,
-      'Actual R:R': trade.actualRR,
+      'Expected R:R': formatRRRatio(trade.expectedRR),
+      'Actual R:R': formatRRRatio(trade.actualRR),
       'Risk %': trade.riskPercent,
       'Result': trade.result,
       'Profit/Loss': trade.profitLoss,
-      'Balance': trade.balance,
+      'Initial Balance': trade.initialBalance || '—',
+      'Current Balance': trade.balance,
       'Notes': trade.notes,
       'Tags': trade.tags.join(', '),
     }];

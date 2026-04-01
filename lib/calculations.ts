@@ -89,3 +89,22 @@ export function getWinLossDistribution(trades: Trade[]): { wins: number; losses:
     losses: trades.filter(t => t.result === 'LOSS').length,
   };
 }
+
+export function formatRRRatio(rr: number): string {
+  if (!rr || rr === 0) return '0:1';
+  
+  // Convert decimal (e.g., 1.5) to ratio (e.g., 1:1.5 or 3:2)
+  // First check if it's close to a simple ratio
+  const rounded = Math.round(rr * 2) / 2; // Round to nearest 0.5
+  
+  // Try to simplify to common ratios
+  if (Math.abs(rr - 1) < 0.1) return '1:1';
+  if (Math.abs(rr - 1.5) < 0.1) return '1:1.5';
+  if (Math.abs(rr - 2) < 0.1) return '1:2';
+  if (Math.abs(rr - 2.5) < 0.1) return '1:2.5';
+  if (Math.abs(rr - 3) < 0.1) return '1:3';
+  if (Math.abs(rr - 5) < 0.1) return '1:5';
+  
+  // Default format: 1:X
+  return `1:${rr.toFixed(1)}`;
+}

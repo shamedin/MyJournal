@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Download, Trash2, Eye, X } from 'lucide-react';
 import { exportTradeAsPDF, exportSingleTradeAsExcel } from '@/lib/exports';
 import { deleteTradeFromStorage } from '@/lib/storage';
+import { formatRRRatio } from '@/lib/calculations';
 import { PDFPreview } from './PDFPreview';
 import { toast } from 'sonner';
 
@@ -186,11 +187,11 @@ export function JournalLayout({ trade, onDelete }: JournalLayoutProps) {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Expected R:R:</span>
-                <span className="font-semibold">{trade.expectedRR.toFixed(2)}</span>
+                <span className="font-semibold">{formatRRRatio(trade.expectedRR)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Actual R:R:</span>
-                <span className="font-semibold">{trade.actualRR.toFixed(2)}</span>
+                <span className="font-semibold">{formatRRRatio(trade.actualRR)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Risk %:</span>
@@ -215,10 +216,30 @@ export function JournalLayout({ trade, onDelete }: JournalLayoutProps) {
                   ${trade.profitLoss.toFixed(2)}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Balance:</span>
-                <span className="font-semibold">${trade.balance.toFixed(2)}</span>
-              </div>
+              {trade.initialBalance > 0 && (
+                <>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Initial Balance:</span>
+                    <span className="font-semibold">${trade.initialBalance.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Current Balance:</span>
+                    <span className="font-semibold">${trade.balance.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between border-t pt-1">
+                    <span className="text-muted-foreground text-xs">Drawdown/Growth:</span>
+                    <span className={`font-semibold text-xs ${(trade.balance - trade.initialBalance) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {(trade.balance - trade.initialBalance) >= 0 ? '+' : ''}{((trade.balance - trade.initialBalance) / trade.initialBalance * 100).toFixed(2)}%
+                    </span>
+                  </div>
+                </>
+              )}
+              {(!trade.initialBalance || trade.initialBalance === 0) && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Balance:</span>
+                  <span className="font-semibold">${trade.balance.toFixed(2)}</span>
+                </div>
+              )}
             </div>
           </Card>
         </div>

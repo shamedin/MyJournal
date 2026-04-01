@@ -27,6 +27,7 @@ export interface Trade {
   result: 'WIN' | 'LOSS';
   profitLoss: number;
   balance: number;
+  initialBalance: number;
   
   // Notes & Tags
   notes: string;
@@ -51,6 +52,7 @@ export interface TradeFormData {
   result: 'WIN' | 'LOSS';
   profitLoss: number;
   balance: number;
+  initialBalance: number;
   notes: string;
   tags: string;
   chart1D: string;
