@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { BookOpen, Brain, Lightbulb } from 'lucide-react';
+import { BookOpen, Brain, Lightbulb, TrendingUp, Library, FileText, Calendar } from 'lucide-react';
 import { getTradesFromStorage } from '@/lib/storage';
 
 export default function Home() {
@@ -390,21 +390,53 @@ export default function Home() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Your Trading Tools</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link href="/journal">
               <Card className="p-8 h-full hover:shadow-lg transition-all cursor-pointer group">
                 <BookOpen className="w-12 h-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-xl font-bold mb-3">Trade Journal</h3>
-                <p className="text-muted-foreground mb-4">Document every trade with entry, exit, setup, and emotional notes. Your journal is the foundation for analyzing patterns and improving your trading strategy.</p>
-                <p className="text-primary font-semibold">Start Logging Trades →</p>
+                <h3 className="text-lg font-bold mb-2">Trade Journal</h3>
+                <p className="text-sm text-muted-foreground">Document every trade with entry, exit, setup, and emotional notes.</p>
+                <p className="text-xs text-primary font-semibold mt-3">View Journal →</p>
+              </Card>
+            </Link>
+            <Link href="/dashboard">
+              <Card className="p-8 h-full hover:shadow-lg transition-all cursor-pointer group">
+                <TrendingUp className="w-12 h-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="text-lg font-bold mb-2">Dashboard</h3>
+                <p className="text-sm text-muted-foreground">Track KPIs, win rate, profit factor, and detailed performance metrics.</p>
+                <p className="text-xs text-primary font-semibold mt-3">View Dashboard →</p>
+              </Card>
+            </Link>
+            <Link href="/setups">
+              <Card className="p-8 h-full hover:shadow-lg transition-all cursor-pointer group">
+                <Library className="w-12 h-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="text-lg font-bold mb-2">Setups Library</h3>
+                <p className="text-sm text-muted-foreground">Save and organize your winning trading setups with performance tracking.</p>
+                <p className="text-xs text-primary font-semibold mt-3">View Setups →</p>
+              </Card>
+            </Link>
+            <Link href="/reports">
+              <Card className="p-8 h-full hover:shadow-lg transition-all cursor-pointer group">
+                <FileText className="w-12 h-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="text-lg font-bold mb-2">Monthly Reports</h3>
+                <p className="text-sm text-muted-foreground">Generate comprehensive monthly trading reports and downloadable summaries.</p>
+                <p className="text-xs text-primary font-semibold mt-3">View Reports →</p>
+              </Card>
+            </Link>
+            <Link href="/calendar">
+              <Card className="p-8 h-full hover:shadow-lg transition-all cursor-pointer group">
+                <Calendar className="w-12 h-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="text-lg font-bold mb-2">Economic Calendar</h3>
+                <p className="text-sm text-muted-foreground">Track high-impact economic events and market-moving catalysts.</p>
+                <p className="text-xs text-primary font-semibold mt-3">View Calendar →</p>
               </Card>
             </Link>
             <Link href="/statistics">
               <Card className="p-8 h-full hover:shadow-lg transition-all cursor-pointer group">
                 <Brain className="w-12 h-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-xl font-bold mb-3">Performance Analysis</h3>
-                <p className="text-muted-foreground mb-4">Analyze your win rate, profit factor, and trading statistics. Understanding your performance metrics reveals your edge and areas for improvement.</p>
-                <p className="text-primary font-semibold">View Your Stats →</p>
+                <h3 className="text-lg font-bold mb-2">Statistics</h3>
+                <p className="text-sm text-muted-foreground">Analyze your win rate, profit factor, and trading statistics in detail.</p>
+                <p className="text-xs text-primary font-semibold mt-3">View Stats →</p>
               </Card>
             </Link>
           </div>

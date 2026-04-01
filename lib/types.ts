@@ -73,3 +73,54 @@ export interface Statistics {
   averageRR: number;
   profitFactor: number;
 }
+
+export interface TradingSetup {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  entryRules: string;
+  exitRules: string;
+  riskRewardRatio: number;
+  tags: string[];
+  createdAt: string;
+  linkedTrades: string[]; // Trade IDs that used this setup
+  winRate: number;
+  totalUsed: number;
+}
+
+export interface EconomicEvent {
+  id: string;
+  name: string;
+  country: string;
+  date: string;
+  time: string;
+  impact: 'HIGH' | 'MEDIUM' | 'LOW';
+  forecast: string;
+  previous: string;
+  actual: string;
+  currency: string;
+  notes: string;
+}
+
+export interface TradingReport {
+  id: string;
+  month: string;
+  year: number;
+  startDate: string;
+  endDate: string;
+  totalTrades: number;
+  winRate: number;
+  profitFactor: number;
+  totalProfit: number;
+  bestTrade: Trade | null;
+  worstTrade: Trade | null;
+  averageWin: number;
+  averageLoss: number;
+  topSetup: TradingSetup | null;
+  emotionalInsights: string;
+  areasForImprovement: string[];
+  lessonsLearned: string[];
+  nextMonthGoals: string[];
+  createdAt: string;
+}
