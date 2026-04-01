@@ -67,14 +67,14 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     chartY += 3;
 
     const chartBoxHeight = 72;
-    const chartSpacing = 1;
+    const chartSpacing = 3; // ~5px gap between images and labels
 
     // Helper to add chart with border in one column
     const addChartBox = (imageData: string | undefined, label: string, yPos: number) => {
-      // Label
+      // Label with 5px (~1.8mm) gap above image
       pdf.setFontSize(7);
       pdf.setFont('helvetica', 'bold');
-      pdf.text(label, chartColX, yPos - 0.5);
+      pdf.text(label, chartColX, yPos - 2);
 
       // Border box
       pdf.setDrawColor(150, 150, 150);
