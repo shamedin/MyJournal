@@ -63,7 +63,9 @@ export default function Home() {
       setCurrentQuoteIndex((prev) => (prev + 1) % motivations.length);
     }, 60000); // Change every 60 seconds
     return () => clearInterval(interval);
-  }, [motivations.length]);
+  }, []);
+
+  return (
     <main className="min-h-screen bg-background">
       {/* Rotating Quote Section - Changes Every Minute */}
       <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-b border-primary/20">
