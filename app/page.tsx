@@ -36,20 +36,254 @@ export default function Home() {
 
   const motivations = [
     {
-      quote: 'In forex, there is no finish line. Success is a continuous journey of learning and adaptation.',
-      insight: 'The best traders never stop learning. Markets evolve, and so must you.',
+      quote: 'The goal of a successful trader is to make the best trades. Money is secondary.',
+      author: 'Alexander Elder',
+      category: 'Trading Mindset & Discipline',
     },
     {
-      quote: 'The money you make in trading is earned through your discipline, not through luck.',
-      insight: 'Every profitable trader followed a plan, managed risk, and remained emotionally disciplined.',
+      quote: 'Risk comes from not knowing what you\'re doing.',
+      author: 'Warren Buffett',
+      category: 'Trading Mindset & Discipline',
     },
     {
-      quote: 'Your losing trades are tuition payments to the market. Pay them wisely and learn the lessons.',
-      insight: 'Losses are not failures; they are the cost of education in becoming a better trader.',
+      quote: 'It\'s not whether you\'re right or wrong, but how much you make when you\'re right and how much you lose when you\'re wrong.',
+      author: 'George Soros',
+      category: 'Trading Mindset & Discipline',
     },
     {
-      quote: 'Patience in forex is not about waiting. It is about executing your plan perfectly when the setup appears.',
-      insight: 'The best traders miss 95% of trades because they are waiting for the perfect setup.',
+      quote: 'Amateurs think about how much money they can make. Professionals think about how much money they could lose.',
+      author: 'Jack Schwager',
+      category: 'Trading Mindset & Discipline',
+    },
+    {
+      quote: 'The market is a device for transferring money from the impatient to the patient.',
+      author: 'Warren Buffett',
+      category: 'Trading Mindset & Discipline',
+    },
+    {
+      quote: 'Trading doesn\'t just reveal your character, it also builds it.',
+      author: 'Yvan Byeajee',
+      category: 'Psychology & Emotions',
+    },
+    {
+      quote: 'The biggest risk is not taking any risk.',
+      author: 'Mark Zuckerberg',
+      category: 'Psychology & Emotions',
+    },
+    {
+      quote: 'Control your emotions or they will control you.',
+      author: 'Alexander Elder',
+      category: 'Psychology & Emotions',
+    },
+    {
+      quote: 'Fear and greed are stronger than long-term resolve.',
+      author: 'Peter Bernstein',
+      category: 'Psychology & Emotions',
+    },
+    {
+      quote: 'You must be able to accept losses calmly.',
+      author: 'Van K. Tharp',
+      category: 'Psychology & Emotions',
+    },
+    {
+      quote: 'If you can\'t take a small loss, sooner or later you will take the mother of all losses.',
+      author: 'Ed Seykota',
+      category: 'Risk Management',
+    },
+    {
+      quote: 'The most important rule of trading is to play great defense.',
+      author: 'Paul Tudor Jones',
+      category: 'Risk Management',
+    },
+    {
+      quote: 'Never risk more than you can afford to lose.',
+      author: 'Larry Hite',
+      category: 'Risk Management',
+    },
+    {
+      quote: 'Losers average losers.',
+      author: 'Paul Tudor Jones',
+      category: 'Risk Management',
+    },
+    {
+      quote: 'Cut your losses short and let your profits run.',
+      author: 'David Ricardo',
+      category: 'Risk Management',
+    },
+    {
+      quote: 'Trade what you see, not what you think.',
+      author: 'Doug Gregory',
+      category: 'Strategy & Edge',
+    },
+    {
+      quote: 'The trend is your friend.',
+      author: 'Martin Zweig',
+      category: 'Strategy & Edge',
+    },
+    {
+      quote: 'Markets are never wrong—opinions often are.',
+      author: 'Jesse Livermore',
+      category: 'Strategy & Edge',
+    },
+    {
+      quote: 'I never try to predict the market.',
+      author: 'George Soros',
+      category: 'Strategy & Edge',
+    },
+    {
+      quote: 'Successful trading is always an emotional battle.',
+      author: 'Jesse Livermore',
+      category: 'Strategy & Edge',
+    },
+    {
+      quote: 'Patience is not the ability to wait, but how you act while waiting.',
+      author: 'Joyce Meyer',
+      category: 'Consistency & Patience',
+    },
+    {
+      quote: 'There is a time to go long, a time to go short, and a time to go fishing.',
+      author: 'Jesse Livermore',
+      category: 'Consistency & Patience',
+    },
+    {
+      quote: 'You don\'t need to trade every day.',
+      author: 'Unknown Trader',
+      category: 'Consistency & Patience',
+    },
+    {
+      quote: 'Good trading is boring.',
+      author: 'George Soros',
+      category: 'Consistency & Patience',
+    },
+    {
+      quote: 'Wait for the right setup. That\'s where the money is.',
+      author: 'Michael Marcus',
+      category: 'Consistency & Patience',
+    },
+    {
+      quote: 'Every trader has strengths and weaknesses.',
+      author: 'Larry Hite',
+      category: 'Learning & Growth',
+    },
+    {
+      quote: 'Learn to take losses. The most important thing in making money is not letting your losses get out of hand.',
+      author: 'Marty Schwartz',
+      category: 'Learning & Growth',
+    },
+    {
+      quote: 'The hard work in trading comes in the preparation.',
+      author: 'Jack Schwager',
+      category: 'Learning & Growth',
+    },
+    {
+      quote: 'A good trader knows when not to trade.',
+      author: 'Unknown Trader',
+      category: 'Learning & Growth',
+    },
+    {
+      quote: 'The market teaches humility.',
+      author: 'Unknown Trader',
+      category: 'Learning & Growth',
+    },
+    {
+      quote: 'Hope is not a strategy.',
+      author: 'Vince Lombardi',
+      category: 'Professional Mindset',
+    },
+    {
+      quote: 'Plan the trade and trade the plan.',
+      author: 'Unknown Trader',
+      category: 'Professional Mindset',
+    },
+    {
+      quote: 'Discipline is the bridge between goals and accomplishment.',
+      author: 'Jim Rohn',
+      category: 'Professional Mindset',
+    },
+    {
+      quote: 'Without discipline, you don\'t have a strategy.',
+      author: 'Unknown Trader',
+      category: 'Professional Mindset',
+    },
+    {
+      quote: 'Trading is a business, not a gamble.',
+      author: 'Alexander Elder',
+      category: 'Professional Mindset',
+    },
+    {
+      quote: 'Losses are part of the game.',
+      author: 'Ed Seykota',
+      category: 'Losses & Failure',
+    },
+    {
+      quote: 'Fail fast, learn faster.',
+      author: 'Unknown Trader',
+      category: 'Losses & Failure',
+    },
+    {
+      quote: 'Every loss is tuition.',
+      author: 'Unknown Trader',
+      category: 'Losses & Failure',
+    },
+    {
+      quote: 'It\'s okay to be wrong, but not okay to stay wrong.',
+      author: 'Unknown Trader',
+      category: 'Losses & Failure',
+    },
+    {
+      quote: 'The market will always punish arrogance.',
+      author: 'Unknown Trader',
+      category: 'Losses & Failure',
+    },
+    {
+      quote: 'Consistency is more important than intensity.',
+      author: 'Unknown Trader',
+      category: 'Success & Mastery',
+    },
+    {
+      quote: 'Master one strategy instead of chasing many.',
+      author: 'Unknown Trader',
+      category: 'Success & Mastery',
+    },
+    {
+      quote: 'Focus on process, not profit.',
+      author: 'Unknown Trader',
+      category: 'Success & Mastery',
+    },
+    {
+      quote: 'Small edges, repeated consistently, create big results.',
+      author: 'Unknown Trader',
+      category: 'Success & Mastery',
+    },
+    {
+      quote: 'The goal is survival first, profit second.',
+      author: 'Unknown Trader',
+      category: 'Success & Mastery',
+    },
+    {
+      quote: 'Trade small, trade often, trade consistently.',
+      author: 'Unknown Trader',
+      category: 'Final Wisdom',
+    },
+    {
+      quote: 'You are not competing with others, only yourself.',
+      author: 'Unknown Trader',
+      category: 'Final Wisdom',
+    },
+    {
+      quote: 'Your biggest enemy is your own mind.',
+      author: 'Unknown Trader',
+      category: 'Final Wisdom',
+    },
+    {
+      quote: 'The chart reflects human behavior.',
+      author: 'Jesse Livermore',
+      category: 'Final Wisdom',
+    },
+    {
+      quote: 'Discipline + Risk Management = Long-term survival.',
+      author: 'Unknown Trader',
+      category: 'Final Wisdom',
     },
   ];
 
@@ -61,22 +295,22 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentQuoteIndex((prev) => (prev + 1) % motivations.length);
-    }, 60000); // Change every 60 seconds
+    }, 10000); // Change every 10 seconds
     return () => clearInterval(interval);
   }, []);
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Rotating Quote Section - Changes Every Minute */}
+      {/* Rotating Quote Section - Changes Every 10 Seconds */}
       <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-b border-primary/20">
         <div className="max-w-4xl mx-auto text-center">
           <div className="space-y-3 animate-in fade-in duration-500">
-            <p className="text-sm font-semibold text-primary uppercase tracking-wide">Thought of the Minute</p>
-            <p className="text-2xl lg:text-3xl font-bold text-balance leading-tight">
+            <p className="text-xs font-semibold text-primary uppercase tracking-widest">{motivations[currentQuoteIndex].category}</p>
+            <p className="text-xl lg:text-2xl font-bold text-balance leading-tight">
               "{motivations[currentQuoteIndex].quote}"
             </p>
-            <p className="text-lg text-muted-foreground italic">
-              {motivations[currentQuoteIndex].insight}
+            <p className="text-sm text-muted-foreground">
+              — {motivations[currentQuoteIndex].author}
             </p>
           </div>
         </div>
