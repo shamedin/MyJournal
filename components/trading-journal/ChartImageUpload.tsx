@@ -33,7 +33,7 @@ export function ChartImageUpload({ timeframe, imageSrc, onImageChange }: ChartIm
   };
 
   return (
-    <div className="space-y-2">
+    <div className="w-full">
       <input
         type="file"
         accept="image/*"
@@ -43,11 +43,11 @@ export function ChartImageUpload({ timeframe, imageSrc, onImageChange }: ChartIm
       />
       
       {imageSrc ? (
-        <div className="relative group">
+        <div className="relative group w-full">
           <img 
             src={imageSrc} 
             alt={`${timeframe} chart`}
-            className="w-full h-32 object-cover rounded-lg border border-border bg-muted"
+            className="w-full h-40 object-contain bg-muted rounded"
           />
           <Button
             size="sm"
@@ -62,11 +62,11 @@ export function ChartImageUpload({ timeframe, imageSrc, onImageChange }: ChartIm
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="w-full h-32 border-2 border-dashed border-border rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors cursor-pointer"
+          className="w-full h-40 border-2 border-dashed border-border rounded flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors cursor-pointer"
         >
           <Upload className="w-5 h-5 text-muted-foreground" />
           <span className="text-xs text-muted-foreground text-center px-2">
-            Click to upload {timeframe} chart
+            Upload {timeframe}
           </span>
         </button>
       )}

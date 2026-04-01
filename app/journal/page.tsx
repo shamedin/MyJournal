@@ -32,18 +32,18 @@ export default function JournalPage() {
   };
 
   return (
-    <main className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <main className="min-h-screen bg-background py-6 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Page Header */}
-        <div>
-          <h1 className="text-4xl font-bold">Trading Journal</h1>
-          <p className="text-muted-foreground mt-2">Log your trades and track your progress</p>
+        <div className="border-b border-border pb-4">
+          <h1 className="text-3xl font-bold">Trading Journal</h1>
+          <p className="text-muted-foreground text-sm mt-1">Log and document your trades</p>
         </div>
 
         {/* Form Section */}
         {showForm && (
-          <Card className="p-6 lg:p-8">
-            <h2 className="text-2xl font-bold mb-6">New Trade Entry</h2>
+          <Card className="p-6 lg:p-8 border-2">
+            <h2 className="text-xl font-bold mb-6 pb-4 border-b border-border">NEW TRADE ENTRY</h2>
             <TradeForm onTradeSubmit={handleTradeSubmit} />
           </Card>
         )}
@@ -51,10 +51,10 @@ export default function JournalPage() {
         {/* Trades List */}
         {trades.length > 0 && (
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Trade History</h2>
-              <span className="text-muted-foreground">
-                {trades.length} trade{trades.length !== 1 ? 's' : ''}
+            <div className="flex justify-between items-center border-b border-border pb-4">
+              <h2 className="text-xl font-bold">RECENT TRADES</h2>
+              <span className="text-xs text-muted-foreground font-semibold">
+                {trades.length} total
               </span>
             </div>
 

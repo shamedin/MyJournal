@@ -9,7 +9,6 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ChartImageUpload } from './ChartImageUpload';
 import { toast } from 'sonner';
-import { ChevronDown } from 'lucide-react';
 
 interface TradeFormProps {
   onTradeSubmit?: (trade: Trade) => void;
@@ -102,278 +101,311 @@ export function TradeForm({ onTradeSubmit }: TradeFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Header Section */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div>
-          <Label htmlFor="date">Date</Label>
-          <Input
-            id="date"
-            type="date"
-            name="date"
-            value={formData.date || ''}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="day">Day</Label>
-          <Input
-            id="day"
-            type="text"
-            name="day"
-            value={formData.day || ''}
-            disabled
-            className="bg-muted"
-          />
-        </div>
-        <div>
-          <Label>Trade # Total</Label>
-          <Input
-            type="text"
-            value={ids.totalId}
-            disabled
-            className="bg-muted"
-          />
-        </div>
-        <div>
-          <Label>Trade # Today</Label>
-          <Input
-            type="text"
-            value={ids.dayId}
-            disabled
-            className="bg-muted"
-          />
-        </div>
-      </div>
-
-      {/* Charts Section */}
-      <div className="space-y-3">
-        <h3 className="font-semibold text-sm">Chart Screenshots</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <Label className="text-xs text-muted-foreground mb-2 block">1D Chart</Label>
-            <ChartImageUpload 
-              timeframe="1D"
-              imageSrc={formData.chart1D}
-              onImageChange={(base64) => handleImageChange('1D', base64)}
-            />
-          </div>
-          <div>
-            <Label className="text-xs text-muted-foreground mb-2 block">4H Chart</Label>
-            <ChartImageUpload 
-              timeframe="4H"
-              imageSrc={formData.chart4H}
-              onImageChange={(base64) => handleImageChange('4H', base64)}
-            />
-          </div>
-          <div>
-            <Label className="text-xs text-muted-foreground mb-2 block">15M Chart</Label>
-            <ChartImageUpload 
-              timeframe="15M"
-              imageSrc={formData.chart15M}
-              onImageChange={(base64) => handleImageChange('15M', base64)}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Trade Details Section */}
-      <div className="space-y-3">
-        <h3 className="font-semibold text-sm">Trade Details</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <Label htmlFor="pair">Pair *</Label>
+      <div className="border-b border-border pb-4 space-y-4">
+        <div className="flex justify-between items-start">
+          <div className="flex-1">
+            <Label htmlFor="date" className="text-sm font-semibold">DATE:</Label>
             <Input
-              id="pair"
-              name="pair"
-              placeholder="EURUSD"
-              value={formData.pair || ''}
+              id="date"
+              type="date"
+              name="date"
+              value={formData.date || ''}
               onChange={handleInputChange}
               required
-            />
-          </div>
-          <div>
-            <Label htmlFor="time">Time</Label>
-            <Input
-              id="time"
-              type="time"
-              name="time"
-              value={formData.time || ''}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <Label htmlFor="direction">Direction</Label>
-            <select
-              id="direction"
-              name="direction"
-              value={formData.direction || 'BUY'}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground"
-            >
-              <option value="BUY">BUY</option>
-              <option value="SELL">SELL</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* Strategy & Psychology */}
-      <div className="space-y-3">
-        <h3 className="font-semibold text-sm">Strategy & Psychology</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="entryModel">Entry Model/Strategy *</Label>
-            <Input
-              id="entryModel"
-              name="entryModel"
-              placeholder="e.g., Breakout, Pullback"
-              value={formData.entryModel || ''}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="confidence">Confidence: {formData.confidence || 0}%</Label>
-            <input
-              id="confidence"
-              type="range"
-              name="confidence"
-              min="0"
-              max="100"
-              value={formData.confidence || 0}
-              onChange={handleInputChange}
-              className="w-full"
+              className="mt-1 font-mono"
             />
           </div>
         </div>
-        <div>
-          <Label htmlFor="emotions">Emotions & Mental State</Label>
-          <Textarea
-            id="emotions"
-            name="emotions"
-            placeholder="How were you feeling during this trade?"
-            value={formData.emotions || ''}
-            onChange={handleInputChange}
-            rows={3}
-          />
-        </div>
-      </div>
-
-      {/* Risk & Reward */}
-      <div className="space-y-3">
-        <h3 className="font-semibold text-sm">Risk & Reward</h3>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="expectedRR">Expected R:R</Label>
+            <Label className="text-xs font-semibold text-muted-foreground">Trade ID of Total Trades:</Label>
             <Input
-              id="expectedRR"
-              type="number"
-              step="0.1"
-              name="expectedRR"
-              placeholder="1.5"
-              value={formData.expectedRR || ''}
-              onChange={handleInputChange}
+              type="text"
+              value={ids.totalId}
+              disabled
+              className="bg-muted mt-1 font-mono font-bold"
             />
           </div>
           <div>
-            <Label htmlFor="actualRR">Actual R:R</Label>
+            <Label className="text-xs font-semibold text-muted-foreground">Trade ID from Today:</Label>
             <Input
-              id="actualRR"
-              type="number"
-              step="0.1"
-              name="actualRR"
-              placeholder="1.2"
-              value={formData.actualRR || ''}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <Label htmlFor="riskPercent">Risk %</Label>
-            <Input
-              id="riskPercent"
-              type="number"
-              step="0.1"
-              name="riskPercent"
-              placeholder="2"
-              value={formData.riskPercent || ''}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <Label htmlFor="result">Result</Label>
-            <select
-              id="result"
-              name="result"
-              value={formData.result || 'WIN'}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground"
-            >
-              <option value="WIN">WIN</option>
-              <option value="LOSS">LOSS</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* P&L & Balance */}
-      <div className="space-y-3">
-        <h3 className="font-semibold text-sm">P&L & Balance</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="profitLoss">Profit/Loss ($)</Label>
-            <Input
-              id="profitLoss"
-              type="number"
-              step="0.01"
-              name="profitLoss"
-              placeholder="100"
-              value={formData.profitLoss || ''}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <Label htmlFor="balance">Account Balance ($)</Label>
-            <Input
-              id="balance"
-              type="number"
-              step="0.01"
-              name="balance"
-              placeholder="10000"
-              value={formData.balance || ''}
-              onChange={handleInputChange}
+              type="text"
+              value={ids.dayId}
+              disabled
+              className="bg-muted mt-1 font-mono font-bold"
             />
           </div>
         </div>
       </div>
 
-      {/* Notes & Tags */}
-      <div className="space-y-3">
-        <h3 className="font-semibold text-sm">Notes & Tags</h3>
-        <div>
-          <Label htmlFor="tags">Tags (comma-separated)</Label>
-          <Input
-            id="tags"
-            name="tags"
-            placeholder="scalp, breakout, high-volatility"
-            value={formData.tags || ''}
-            onChange={handleInputChange}
-          />
+      {/* Main Layout - Two Column */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* LEFT COLUMN - Chart Screenshots */}
+        <div className="space-y-4">
+          <h3 className="font-bold text-sm">SCREENSHOTS</h3>
+          
+          <div className="space-y-4">
+            {/* 1D Chart */}
+            <div>
+              <Label className="text-xs font-bold mb-2 block">1) 1D</Label>
+              <div className="border-2 border-border rounded bg-muted/30 overflow-hidden">
+                <ChartImageUpload 
+                  timeframe="1D"
+                  imageSrc={formData.chart1D}
+                  onImageChange={(base64) => handleImageChange('1D', base64)}
+                />
+              </div>
+            </div>
+
+            {/* 4H Chart */}
+            <div>
+              <Label className="text-xs font-bold mb-2 block">2) 4H</Label>
+              <div className="border-2 border-border rounded bg-muted/30 overflow-hidden">
+                <ChartImageUpload 
+                  timeframe="4H"
+                  imageSrc={formData.chart4H}
+                  onImageChange={(base64) => handleImageChange('4H', base64)}
+                />
+              </div>
+            </div>
+
+            {/* 15M Chart */}
+            <div>
+              <Label className="text-xs font-bold mb-2 block">3) 15M</Label>
+              <div className="border-2 border-border rounded bg-muted/30 overflow-hidden">
+                <ChartImageUpload 
+                  timeframe="15M"
+                  imageSrc={formData.chart15M}
+                  onImageChange={(base64) => handleImageChange('15M', base64)}
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <Label htmlFor="notes">Trade Notes</Label>
-          <Textarea
-            id="notes"
-            name="notes"
-            placeholder="Detailed notes about this trade..."
-            value={formData.notes || ''}
-            onChange={handleInputChange}
-            rows={4}
-          />
+
+        {/* RIGHT COLUMN - Trade Details */}
+        <div className="space-y-4">
+          <div className="space-y-3">
+            {/* Row 1: Day, Pair */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="day" className="text-xs font-bold">DAY:</Label>
+                <Input
+                  id="day"
+                  type="text"
+                  name="day"
+                  value={formData.day || ''}
+                  disabled
+                  className="bg-muted text-xs mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="pair" className="text-xs font-bold">PAIR:</Label>
+                <Input
+                  id="pair"
+                  name="pair"
+                  placeholder="EURUSD"
+                  value={formData.pair || ''}
+                  onChange={handleInputChange}
+                  required
+                  className="text-xs mt-1"
+                />
+              </div>
+            </div>
+
+            {/* Row 2: Time, Direction */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="time" className="text-xs font-bold">TIME:</Label>
+                <Input
+                  id="time"
+                  type="time"
+                  name="time"
+                  value={formData.time || ''}
+                  onChange={handleInputChange}
+                  className="text-xs mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="direction" className="text-xs font-bold">BUY/SELL:</Label>
+                <select
+                  id="direction"
+                  name="direction"
+                  value={formData.direction || 'BUY'}
+                  onChange={handleInputChange}
+                  className="w-full px-2 py-1 text-xs rounded border border-border bg-background"
+                >
+                  <option value="BUY">BUY</option>
+                  <option value="SELL">SELL</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Row 3: Entry Model */}
+            <div>
+              <Label htmlFor="entryModel" className="text-xs font-bold">ENTRY MODEL:</Label>
+              <Input
+                id="entryModel"
+                name="entryModel"
+                placeholder="e.g., Breakout, Pullback"
+                value={formData.entryModel || ''}
+                onChange={handleInputChange}
+                required
+                className="text-xs mt-1"
+              />
+            </div>
+
+            {/* Row 4: Emotions */}
+            <div>
+              <Label htmlFor="emotions" className="text-xs font-bold">EMOTIONS:</Label>
+              <Textarea
+                id="emotions"
+                name="emotions"
+                placeholder="How were you feeling?"
+                value={formData.emotions || ''}
+                onChange={handleInputChange}
+                rows={2}
+                className="text-xs mt-1 resize-none"
+              />
+            </div>
+
+            {/* Row 5: Confidence */}
+            <div>
+              <Label htmlFor="confidence" className="text-xs font-bold">CONFIDENCE: {formData.confidence || 0}%</Label>
+              <input
+                id="confidence"
+                type="range"
+                name="confidence"
+                min="0"
+                max="100"
+                value={formData.confidence || 0}
+                onChange={handleInputChange}
+                className="w-full mt-1"
+              />
+            </div>
+
+            {/* Row 6: Risk/Reward */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="expectedRR" className="text-xs font-bold">EXPECTED R:R:</Label>
+                <Input
+                  id="expectedRR"
+                  type="number"
+                  step="0.1"
+                  name="expectedRR"
+                  placeholder="1.5"
+                  value={formData.expectedRR || ''}
+                  onChange={handleInputChange}
+                  className="text-xs mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="actualRR" className="text-xs font-bold">ACTUAL R:R:</Label>
+                <Input
+                  id="actualRR"
+                  type="number"
+                  step="0.1"
+                  name="actualRR"
+                  placeholder="1.2"
+                  value={formData.actualRR || ''}
+                  onChange={handleInputChange}
+                  className="text-xs mt-1"
+                />
+              </div>
+            </div>
+
+            {/* Row 7: Risk % */}
+            <div>
+              <Label htmlFor="riskPercent" className="text-xs font-bold">RISK %:</Label>
+              <Input
+                id="riskPercent"
+                type="number"
+                step="0.1"
+                name="riskPercent"
+                placeholder="2"
+                value={formData.riskPercent || ''}
+                onChange={handleInputChange}
+                className="text-xs mt-1"
+              />
+            </div>
+
+            {/* Row 8: Result & P&L */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="result" className="text-xs font-bold">RESULT:</Label>
+                <select
+                  id="result"
+                  name="result"
+                  value={formData.result || 'WIN'}
+                  onChange={handleInputChange}
+                  className="w-full px-2 py-1 text-xs rounded border border-border bg-background mt-1"
+                >
+                  <option value="WIN">WIN</option>
+                  <option value="LOSS">LOSS</option>
+                </select>
+              </div>
+              <div>
+                <Label htmlFor="profitLoss" className="text-xs font-bold">PROFIT/LOSS:</Label>
+                <Input
+                  id="profitLoss"
+                  type="number"
+                  step="0.01"
+                  name="profitLoss"
+                  placeholder="100"
+                  value={formData.profitLoss || ''}
+                  onChange={handleInputChange}
+                  className="text-xs mt-1"
+                />
+              </div>
+            </div>
+
+            {/* Row 9: Balance */}
+            <div>
+              <Label htmlFor="balance" className="text-xs font-bold">BALANCE:</Label>
+              <Input
+                id="balance"
+                type="number"
+                step="0.01"
+                name="balance"
+                placeholder="10000"
+                value={formData.balance || ''}
+                onChange={handleInputChange}
+                className="text-xs mt-1"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Submit Button */}
-      <div className="flex gap-3 pt-6">
+      {/* Notes Section - Full Width */}
+      <div className="border-t border-border pt-6 space-y-3">
+        <h3 className="font-bold text-sm">NOTES:</h3>
+        <Textarea
+          id="notes"
+          name="notes"
+          placeholder="Detailed notes about this trade..."
+          value={formData.notes || ''}
+          onChange={handleInputChange}
+          rows={4}
+          className="resize-none"
+        />
+      </div>
+
+      {/* Tags */}
+      <div className="space-y-2">
+        <Label htmlFor="tags" className="text-xs font-semibold">Tags (comma-separated)</Label>
+        <Input
+          id="tags"
+          name="tags"
+          placeholder="scalp, breakout, high-volatility"
+          value={formData.tags || ''}
+          onChange={handleInputChange}
+          className="text-sm"
+        />
+      </div>
+
+      {/* Submit Buttons */}
+      <div className="flex gap-3 pt-6 border-t border-border">
         <Button type="submit" className="flex-1" size="lg">
           Save Trade
         </Button>
