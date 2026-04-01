@@ -25,7 +25,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
 
     // ============ HEADER SECTION ============
     pdf.setFontSize(18);
-    pdf.setFont(undefined, 'bold');
+    pdf.setFont('helvetica', 'bold');
     pdf.text('TRADING JOURNAL', margin, yPos);
     yPos += 7;
 
@@ -36,7 +36,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
 
     // Date and Trade IDs
     pdf.setFontSize(10);
-    pdf.setFont(undefined, 'normal');
+    pdf.setFont('helvetica', 'normal');
     const dateStr = new Date(trade.date).toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
@@ -62,7 +62,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     // ============ LEFT COLUMN - SCREENSHOTS (FULL HEIGHT, ONE COLUMN) ============
     let chartY = yPos;
     pdf.setFontSize(9);
-    pdf.setFont(undefined, 'bold');
+    pdf.setFont('helvetica', 'bold');
     pdf.text('SCREENSHOTS', chartColX, chartY);
     chartY += 3;
 
@@ -73,7 +73,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     const addChartBox = (imageData: string | undefined, label: string, yPos: number) => {
       // Label
       pdf.setFontSize(7);
-      pdf.setFont(undefined, 'bold');
+      pdf.setFont('helvetica', 'bold');
       pdf.text(label, chartColX, yPos - 0.5);
 
       // Border box
@@ -101,7 +101,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     // ============ RIGHT COLUMN - TRADE INFO (COMPACT) ============
     let infoY = yPos;
     pdf.setFontSize(8);
-    pdf.setFont(undefined, 'bold');
+    pdf.setFont('helvetica', 'bold');
     pdf.text('TRADE INFO', infoColX, infoY);
     infoY += 3;
 
@@ -109,9 +109,9 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     const infoLineHeight = 2.8;
 
     const addCompactInfo = (label: string, value: string, y: number) => {
-      pdf.setFont(undefined, 'bold');
+      pdf.setFont('helvetica', 'bold');
       pdf.text(label + ':', infoColX, y);
-      pdf.setFont(undefined, 'normal');
+      pdf.setFont('helvetica', 'normal');
       // Truncate long values
       const truncValue = value.length > 12 ? value.substring(0, 12) + '.' : value;
       pdf.text(truncValue, infoColX + 13, y);
@@ -144,12 +144,12 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     // ============ EMOTIONS SECTION (SMALL) ============
     if (trade.emotions) {
       pdf.setFontSize(7);
-      pdf.setFont(undefined, 'bold');
+      pdf.setFont('helvetica', 'bold');
       pdf.text('EMOTIONS:', margin, yPos);
       yPos += 5;
 
       pdf.setFontSize(7);
-      pdf.setFont(undefined, 'normal');
+      pdf.setFont('helvetica', 'normal');
       const emotionsLines = pdf.splitTextToSize(trade.emotions, contentWidth - 2);
       emotionsLines.slice(0, 1).forEach((line: string) => {
         pdf.text(line, margin, yPos);
@@ -160,7 +160,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
 
     // ============ NOTES SECTION - 5 LINES FOR WRITING ============
     pdf.setFontSize(8);
-    pdf.setFont(undefined, 'bold');
+    pdf.setFont('helvetica', 'bold');
     pdf.text('NOTES:', margin, yPos);
     yPos += 2.5;
 
@@ -182,7 +182,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     // Add notes text if exists (small, upper area)
     if (trade.notes) {
       pdf.setFontSize(6);
-      pdf.setFont(undefined, 'normal');
+      pdf.setFont('helvetica', 'normal');
       const notesLines = pdf.splitTextToSize(trade.notes, contentWidth - 4);
       let notesTextY = yPos + 1.5;
 
@@ -300,7 +300,7 @@ export async function exportStatisticsAsPDF(trades: Trade[]): Promise<void> {
 
     // ============ HEADER ============
     pdf.setFontSize(24);
-    pdf.setFont(undefined, 'bold');
+    pdf.setFont('helvetica', 'bold');
     pdf.text('TRADING STATISTICS', margin, yPos);
     yPos += 10;
 
@@ -310,7 +310,7 @@ export async function exportStatisticsAsPDF(trades: Trade[]): Promise<void> {
       : 'N/A';
 
     pdf.setFontSize(11);
-    pdf.setFont(undefined, 'normal');
+    pdf.setFont('helvetica', 'normal');
     pdf.text(`Period: ${dateRange}`, margin, yPos);
     yPos += 7;
 
@@ -321,7 +321,7 @@ export async function exportStatisticsAsPDF(trades: Trade[]): Promise<void> {
 
     // ============ SUMMARY STATS ============
     pdf.setFontSize(13);
-    pdf.setFont(undefined, 'bold');
+    pdf.setFont('helvetica', 'bold');
     pdf.text('SUMMARY', margin, yPos);
     yPos += 7;
 
@@ -333,7 +333,7 @@ export async function exportStatisticsAsPDF(trades: Trade[]): Promise<void> {
     ];
 
     pdf.setFontSize(10);
-    pdf.setFont(undefined, 'normal');
+    pdf.setFont('helvetica', 'normal');
     summaryData.forEach(([label, value], idx) => {
       pdf.text(label, margin, yPos);
       pdf.text(value, margin + contentWidth - 40, yPos, { align: 'right' });
@@ -344,7 +344,7 @@ export async function exportStatisticsAsPDF(trades: Trade[]): Promise<void> {
 
     // ============ PERFORMANCE METRICS ============
     pdf.setFontSize(13);
-    pdf.setFont(undefined, 'bold');
+    pdf.setFont('helvetica', 'bold');
     pdf.text('PERFORMANCE METRICS', margin, yPos);
     yPos += 7;
 
@@ -358,7 +358,7 @@ export async function exportStatisticsAsPDF(trades: Trade[]): Promise<void> {
     ];
 
     pdf.setFontSize(10);
-    pdf.setFont(undefined, 'normal');
+    pdf.setFont('helvetica', 'normal');
     performanceData.forEach(([label, value]) => {
       pdf.text(label, margin, yPos);
       pdf.text(value, margin + contentWidth - 40, yPos, { align: 'right' });
@@ -373,12 +373,12 @@ export async function exportStatisticsAsPDF(trades: Trade[]): Promise<void> {
       
       if (breakdown.length > 0) {
         pdf.setFontSize(13);
-        pdf.setFont(undefined, 'bold');
+        pdf.setFont('helvetica', 'bold');
         pdf.text('STRATEGY BREAKDOWN', margin, yPos);
         yPos += 7;
 
         pdf.setFontSize(9);
-        pdf.setFont(undefined, 'bold');
+        pdf.setFont('helvetica', 'bold');
         pdf.text('Strategy', margin, yPos);
         pdf.text('Trades', margin + contentWidth - 50, yPos, { align: 'center' });
         pdf.text('Win Rate', margin + contentWidth - 10, yPos, { align: 'center' });
@@ -389,7 +389,7 @@ export async function exportStatisticsAsPDF(trades: Trade[]): Promise<void> {
         pdf.line(margin, yPos, pageWidth - margin, yPos);
         yPos += 4;
 
-        pdf.setFont(undefined, 'normal');
+        pdf.setFont('helvetica', 'normal');
         breakdown.forEach(({ strategy, count, winRate }) => {
           if (yPos > pageHeight - 15) {
             pdf.addPage();
