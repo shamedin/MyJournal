@@ -41,10 +41,10 @@ export function PDFPreview({ trade }: PDFPreviewProps) {
               <img 
                 src={trade.chart1D} 
                 alt="1D Chart"
-                className="w-full h-12 object-contain bg-gray-50"
+                className="w-full h-24 object-contain bg-gray-50"
               />
             ) : (
-              <div className="w-full h-12 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+              <div className="w-full h-24 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
                 —
               </div>
             )}
@@ -57,10 +57,10 @@ export function PDFPreview({ trade }: PDFPreviewProps) {
               <img 
                 src={trade.chart4H} 
                 alt="4H Chart"
-                className="w-full h-12 object-contain bg-gray-50"
+                className="w-full h-24 object-contain bg-gray-50"
               />
             ) : (
-              <div className="w-full h-12 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+              <div className="w-full h-24 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
                 —
               </div>
             )}
@@ -73,10 +73,10 @@ export function PDFPreview({ trade }: PDFPreviewProps) {
               <img 
                 src={trade.chart15M} 
                 alt="15M Chart"
-                className="w-full h-12 object-contain bg-gray-50"
+                className="w-full h-24 object-contain bg-gray-50"
               />
             ) : (
-              <div className="w-full h-12 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+              <div className="w-full h-24 bg-gray-100 flex items-center justify-center text-xs text-gray-400">
                 —
               </div>
             )}

@@ -47,7 +47,7 @@ export function ChartImageUpload({ timeframe, imageSrc, onImageChange }: ChartIm
           <img 
             src={imageSrc} 
             alt={`${timeframe} chart`}
-            className="w-full h-40 object-contain bg-muted rounded"
+            className="w-full h-80 object-contain bg-muted rounded"
           />
           <Button
             size="sm"
@@ -62,7 +62,7 @@ export function ChartImageUpload({ timeframe, imageSrc, onImageChange }: ChartIm
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="w-full h-40 border-2 border-dashed border-border rounded flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors cursor-pointer"
+          className="w-full h-80 border-2 border-dashed border-border rounded flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors cursor-pointer"
         >
           <Upload className="w-5 h-5 text-muted-foreground" />
           <span className="text-xs text-muted-foreground text-center px-2">
