@@ -65,7 +65,7 @@ export async function exportTradeAsPDF(trade: Trade): Promise<void> {
     pdf.text('SCREENSHOTS', chartColX, chartY);
     chartY += 3;
 
-    const chartBoxHeight = 18;
+    const chartBoxHeight = 36;
     const chartSpacing = 1;
 
     // Helper to add chart with border in one column
