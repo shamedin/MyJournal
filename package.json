@@ -1,16 +1,18 @@
 {
-  "name": "my-project",
-  "version": "0.1.0",
+  "name": "trading-journal",
+  "version": "1.0.0",
+  "description": "A professional trading journal application for tracking trades and improving trading performance",
+  "author": "Your Name",
   "private": true,
+  "main": "index.js",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "next build && next export",
+    "start": "electron .",
     "lint": "eslint .",
-    "electron": "electron .",
     "electron-dev": "concurrently \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron-build": "next build && electron-builder",
-    "electron-build-win": "next build && electron-builder --win"
+    "electron-build": "next build && next export && electron-builder",
+    "electron-build-win": "next build && next export && electron-builder --win"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -85,8 +87,13 @@
   "build": {
     "appId": "com.tradingjournal.app",
     "productName": "Trading Journal",
+    "directories": {
+      "buildResources": "public",
+      "output": "dist"
+    },
     "files": [
-      "dist/**/*",
+      "index.js",
+      "out/**/*",
       "public/**/*",
       "node_modules/**/*"
     ],

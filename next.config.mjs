@@ -1,15 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   typescript: {
     ignoreBuildErrors: true,
   },
   images: {
     unoptimized: true,
-  },
-  // Disable Turbopack for Windows builds - use SWC instead
-  // This fixes memory allocation errors on Windows
-  experimental: {
-    turbopack: false,
   },
 }
 
