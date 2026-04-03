@@ -1,62 +1,73 @@
 @echo off
-REM Trading Journal - Desktop App Builder
-REM This script builds your Trading Journal as a Windows desktop application
+REM Build the Electron desktop app for Windows
 
 echo.
 echo ========================================
-echo  Trading Journal Desktop App Builder
+echo   Building Desktop App for Windows
 echo ========================================
 echo.
 
-REM Check if Node.js is installed
-where node >nul 2>nul
-if %errorlevel% neq 0 (
-    echo ERROR: Node.js is not installed or not in PATH
-    echo Please download and install Node.js from: https://nodejs.org/
-    echo Make sure to check "Add to PATH" during installation
+REM Check if dependencies are installed
+if not exist "node_modules" (
+    echo ERROR: Dependencies not installed!
+    echo Please run SIMPLE_SETUP.bat first
     pause
     exit /b 1
 )
 
-echo Node.js found: %nodever%
-node --version
-echo.
+REM Check if icon exists (required for Windows build)
+if not exist "public\icon.ico" (
+    echo.
+    echo WARNING: App icon not found at public\icon.ico
+    echo.
+    echo To fix this:
+    echo 1. Go to https://convertio.co/png-ico/
+    echo 2. Upload: public\icon.png
+    echo 3. Download as .ico
+    echo 4. Save to: public\icon.ico
+    echo 5. Run this script again
+    echo.
+    pause
+    exit /b 1
+)
 
-REM Check if node_modules exists
-if not exist "node_modules" (
-    echo Installing dependencies... (This may take a few minutes)
-    call npm install
-    if %errorlevel% neq 0 (
-        echo ERROR: Failed to install dependencies
-        pause
-        exit /b 1
-    )
+echo Building Next.js application...
+call npm run build
+
+if errorlevel 1 (
+    echo.
+    echo ERROR: Build failed
+    echo Check the error messages above
+    pause
+    exit /b 1
 )
 
 echo.
-echo Building desktop application...
-echo This will take 3-10 minutes on first build...
+echo Building Electron desktop app...
+echo This may take 2-5 minutes...
 echo.
 
-REM Build the Next.js app and create Windows installer
-call npm run electron-build-win
+call npx electron-builder --win
 
-if %errorlevel% equ 0 (
+if errorlevel 1 (
     echo.
-    echo ========================================
-    echo  BUILD SUCCESSFUL!
-    echo ========================================
-    echo.
-    echo Your desktop app is ready in the 'dist' folder:
-    echo   - Trading-Journal-Setup.exe (Installer)
-    echo   - Trading-Journal.exe (Portable)
-    echo.
-    echo Double-click either file to run or install your app!
-    echo.
-) else (
-    echo.
-    echo ERROR: Build failed. Check the messages above.
-    echo.
+    echo ERROR: Desktop app build failed
+    echo Check the error messages above
+    pause
+    exit /b 1
 )
 
+echo.
+echo ========================================
+echo   Build Complete!
+echo ========================================
+echo.
+echo Your app is ready in: dist\
+echo.
+echo You'll find:
+echo   - Trading Journal Setup.exe (installer)
+echo   - Trading Journal.exe (portable version)
+echo.
+echo Double-click either .exe to install or run your desktop app!
+echo.
 pause
