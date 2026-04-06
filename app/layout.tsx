@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import { Sidebar } from '@/components/navigation/Sidebar'
-import { LanguageProvider } from '@/lib/language-context'
+import { LayoutClient } from './layout-client'
 import { Toaster } from 'sonner'
 import './globals.css'
 
@@ -57,10 +56,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased lg:ml-64">
-        <LanguageProvider>
-          <Sidebar />
+        <LayoutClient>
           {children}
-        </LanguageProvider>
+        </LayoutClient>
         <Toaster />
         <Analytics />
       </body>
