@@ -25,15 +25,17 @@ export function Sidebar() {
 
   const toggleDarkMode = () => {
     const html = document.documentElement;
-    if (html.classList.contains('dark')) {
-      html.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-      setIsDark(false);
-    } else {
+    const newIsDark = !isDark;
+    
+    if (newIsDark) {
       html.classList.add('dark');
       localStorage.setItem('theme', 'dark');
-      setIsDark(true);
+    } else {
+      html.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
+    
+    setIsDark(newIsDark);
   };
 
   const isActive = (path: string) => {
@@ -115,18 +117,18 @@ export function Sidebar() {
           </Link>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {mounted && (
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleDarkMode}
-                className="rounded-lg hover:bg-muted"
+                className="rounded-lg hover:bg-primary/20 w-12 h-12 flex items-center justify-center transition-all"
               >
                 {isDark ? (
-                  <Sun className="w-5 h-5 text-foreground" />
+                  <Sun className="w-6 h-6 text-primary font-bold" />
                 ) : (
-                  <Moon className="w-5 h-5 text-foreground" />
+                  <Moon className="w-6 h-6 text-primary font-bold" />
                 )}
               </Button>
             )}
@@ -134,12 +136,12 @@ export function Sidebar() {
               variant="ghost"
               size="icon"
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="rounded-lg hover:bg-muted w-10 h-10 flex items-center justify-center"
+              className="rounded-lg hover:bg-primary/20 w-12 h-12 flex items-center justify-center transition-all duration-200"
             >
               {sidebarOpen ? (
-                <X className="w-6 h-6 text-foreground" />
+                <X className="w-7 h-7 text-primary font-bold" />
               ) : (
-                <Menu className="w-6 h-6 text-foreground" />
+                <Menu className="w-7 h-7 text-primary font-bold" />
               )}
             </Button>
           </div>
