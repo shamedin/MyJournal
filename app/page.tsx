@@ -324,7 +324,7 @@ export default function Home() {
             {motivations.map((item, idx) => (
               <Card key={idx} className="p-6 border-l-4 border-l-primary hover:shadow-lg transition-shadow">
                 <p className="text-lg font-semibold text-primary italic mb-4">&quot;{item.quote}&quot;</p>
-                <p className="text-muted-foreground">{item.insight}</p>
+                <p className="text-muted-foreground">— {item.author}</p>
               </Card>
             ))}
           </div>
