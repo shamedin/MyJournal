@@ -10,6 +10,7 @@ import { getTradesFromStorage } from '@/lib/storage';
 export default function Home() {
   const [journalCount, setJournalCount] = useState(0);
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
+  const [currentMotivationIndex, setCurrentMotivationIndex] = useState(0);
 
   const teachings = [
     {
@@ -318,15 +319,53 @@ export default function Home() {
 
       {/* Daily Motivation Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Daily Wisdom & Motivation</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {motivations.map((item, idx) => (
-              <Card key={idx} className="p-6 border-l-4 border-l-primary hover:shadow-lg transition-shadow">
-                <p className="text-lg font-semibold text-primary italic mb-4">&quot;{item.quote}&quot;</p>
-                <p className="text-muted-foreground">— {item.author}</p>
-              </Card>
-            ))}
+          <div className="space-y-6">
+            {/* Motivation Display */}
+            <Card className="p-8 md:p-10 border-l-4 border-l-primary min-h-64 flex flex-col justify-center">
+              <div className="space-y-4">
+                <p className="text-xl md:text-2xl font-semibold text-primary italic leading-relaxed text-center">
+                  &quot;{motivations[currentMotivationIndex].quote}&quot;
+                </p>
+                <p className="text-lg text-muted-foreground text-center font-medium">
+                  — {motivations[currentMotivationIndex].author}
+                </p>
+                <p className="text-xs text-primary uppercase tracking-widest text-center font-bold">
+                  {motivations[currentMotivationIndex].category}
+                </p>
+              </div>
+            </Card>
+
+            {/* Navigation Controls */}
+            <div className="flex items-center justify-between gap-4">
+              <Button
+                onClick={() => setCurrentMotivationIndex((prev) => prev === 0 ? motivations.length - 1 : prev - 1)}
+                variant="outline"
+                className="flex-1 sm:flex-initial"
+              >
+                ← Previous
+              </Button>
+              
+              <div className="text-center">
+                <p className="text-sm font-medium text-muted-foreground">
+                  {currentMotivationIndex + 1} / {motivations.length}
+                </p>
+              </div>
+
+              <Button
+                onClick={() => setCurrentMotivationIndex((prev) => (prev + 1) % motivations.length)}
+                variant="outline"
+                className="flex-1 sm:flex-initial"
+              >
+                Next →
+              </Button>
+            </div>
+
+            {/* Category Filter Info */}
+            <div className="text-center text-sm text-muted-foreground">
+              <p>Browse through {motivations.length} daily motivations to inspire your trading journey</p>
+            </div>
           </div>
         </div>
       </section>
