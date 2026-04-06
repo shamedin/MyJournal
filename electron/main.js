@@ -2,11 +2,24 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
 let mainWindow = null;
+let staticServer = null;
 
 // Check if running in development mode
 const isDev = process.env.NODE_ENV === 'development' || 
               (process.defaultApp === true) ||
               (/[\\/]electron[\\/]/.test(process.execPath));
+
+const startStaticServer = () => {
+  if (isDev) return Promise.resolve();
+  
+  return new Promise((resolve) => {
+    staticServer = require('./static-server.js');
+    staticServer.on('listening', () => {
+      console.log('[v0] Static server started');
+      resolve();
+    });
+  });
+};
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
@@ -25,7 +38,7 @@ const createWindow = () => {
 
   const startUrl = isDev
     ? 'http://localhost:3000'
-    : `file://${path.join(__dirname, '../out/index.html').replace(/\\/g, '/')}`;
+    : 'http://localhost:3000';
 
   mainWindow.loadURL(startUrl);
 
@@ -38,7 +51,10 @@ const createWindow = () => {
   });
 };
 
-app.on('ready', createWindow);
+app.on('ready', async () => {
+  await startStaticServer();
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
