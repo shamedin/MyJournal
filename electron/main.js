@@ -1,8 +1,8 @@
-import { app, BrowserWindow, Menu, ipcMain } from 'electron';
-import path from 'path';
-import isDev from 'electron-is-dev';
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const path = require('path');
+const isDev = require('electron-is-dev');
 
-let mainWindow: BrowserWindow | null = null;
+let mainWindow = null;
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
@@ -49,7 +49,7 @@ app.on('activate', () => {
 });
 
 // Create application menu
-const template: Electron.MenuItemConstructorOptions[] = [
+const template = [
   {
     label: 'File',
     submenu: [
