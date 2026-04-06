@@ -117,7 +117,7 @@ export function Sidebar() {
           </Link>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0">
             {mounted && (
               <Button
                 variant="ghost"
