@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import { MainNav } from '@/components/navigation/MainNav'
+import { Sidebar } from '@/components/navigation/Sidebar'
 import { Toaster } from 'sonner'
 import './globals.css'
 
@@ -54,8 +54,8 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased">
-        <MainNav />
+      <body className="font-sans antialiased lg:ml-64">
+        <Sidebar />
         {children}
         <Toaster />
         <Analytics />
