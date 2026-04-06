@@ -1,8 +1,12 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
-const isDev = require('electron-is-dev');
 
 let mainWindow = null;
+
+// Check if running in development mode
+const isDev = process.env.NODE_ENV === 'development' || 
+              (process.defaultApp === true) ||
+              (/[\\/]electron[\\/]/.test(process.execPath));
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
