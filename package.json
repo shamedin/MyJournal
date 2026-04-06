@@ -2,6 +2,7 @@
   "name": "my-project",
   "version": "1.0.0",
   "description": "Trading Journal Desktop Application",
+  "author": "Trading Journal",
   "private": true,
   "main": "electron/main.js",
   "homepage": "./",
@@ -85,5 +86,42 @@
     "tw-animate-css": "1.3.3",
     "typescript": "5.7.3",
     "wait-on": "^8.0.0"
+  },
+  "build": {
+    "appId": "com.tradingjournal.desktop",
+    "productName": "Trading Journal",
+    "directories": {
+      "buildResources": "public",
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "public/**/*",
+      "out/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "public/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Trading Journal"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.exe"
+    }
   }
 }
