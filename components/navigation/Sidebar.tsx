@@ -4,13 +4,16 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Moon, Sun, BookOpen, BarChart3, History, Combine, TrendingUp, Library, Menu, X } from 'lucide-react';
+import { useLanguage } from '@/lib/language-context';
+import { Moon, Sun, BookOpen, BarChart3, History, Combine, TrendingUp, Library, Menu, X, Globe } from 'lucide-react';
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { language, setLanguage, t } = useLanguage();
   const [isDark, setIsDark] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -52,6 +55,12 @@ export function Sidebar() {
     { href: '/pdf-merger', label: 'PDF Merger', icon: Combine },
   ];
 
+  const languageOptions = [
+    { code: 'en', label: 'English' },
+    { code: 'am', label: 'አማርኛ (Amharic)' },
+    { code: 'af', label: 'Afan Oromo' },
+  ];
+
   return (
     <>
       {/* Desktop Sidebar */}
@@ -86,22 +95,43 @@ export function Sidebar() {
         </nav>
 
         {/* Dark Mode Toggle */}
-        <div className="flex items-center justify-between pt-6 border-t border-sidebar-border/50">
-          <span className="text-sm text-sidebar-foreground/60">Theme</span>
-          {mounted && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleDarkMode}
-              className="rounded-lg hover:bg-sidebar-accent/30"
-            >
-              {isDark ? (
-                <Sun className="w-5 h-5 text-sidebar-foreground" />
-              ) : (
-                <Moon className="w-5 h-5 text-sidebar-foreground" />
-              )}
-            </Button>
-          )}
+        <div className="space-y-4 pt-6 border-t border-sidebar-border/50">
+          {/* Language Selector */}
+          <div className="space-y-2">
+            <label className="text-sm text-sidebar-foreground/60 block px-4">{t('sidebar.selectLanguage')}</label>
+            <div className="grid grid-cols-3 gap-2 px-2">
+              {languageOptions.map((lang) => (
+                <Button
+                  key={lang.code}
+                  onClick={() => setLanguage(lang.code as any)}
+                  variant={language === lang.code ? 'default' : 'outline'}
+                  size="sm"
+                  className="text-xs h-8"
+                >
+                  {lang.code.toUpperCase()}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Theme Toggle */}
+          <div className="flex items-center justify-between px-4">
+            <span className="text-sm text-sidebar-foreground/60">{t('settings.theme')}</span>
+            {mounted && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleDarkMode}
+                className="rounded-lg hover:bg-sidebar-accent/30"
+              >
+                {isDark ? (
+                  <Sun className="w-5 h-5 text-sidebar-foreground" />
+                ) : (
+                  <Moon className="w-5 h-5 text-sidebar-foreground" />
+                )}
+              </Button>
+            )}
+          </div>
         </div>
       </aside>
 
@@ -119,18 +149,48 @@ export function Sidebar() {
           {/* Right Actions */}
           <div className="flex items-center gap-0">
             {mounted && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleDarkMode}
-                className="rounded-lg hover:bg-primary/20 w-12 h-12 flex items-center justify-center transition-all"
-              >
-                {isDark ? (
-                  <Sun className="w-6 h-6 text-primary font-bold" />
-                ) : (
-                  <Moon className="w-6 h-6 text-primary font-bold" />
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+                  className="rounded-lg hover:bg-primary/20 w-12 h-12 flex items-center justify-center transition-all relative"
+                >
+                  <Globe className="w-6 h-6 text-primary font-bold" />
+                </Button>
+                {showLanguageMenu && (
+                  <div className="absolute top-14 right-14 bg-card border border-border rounded-lg shadow-lg p-2 space-y-1 z-50">
+                    {languageOptions.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          setLanguage(lang.code as any);
+                          setShowLanguageMenu(false);
+                        }}
+                        className={`block w-full text-left px-3 py-2 text-sm rounded transition-colors ${
+                          language === lang.code
+                            ? 'bg-primary text-primary-foreground'
+                            : 'hover:bg-muted'
+                        }`}
+                      >
+                        {lang.label}
+                      </button>
+                    ))}
+                  </div>
                 )}
-              </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleDarkMode}
+                  className="rounded-lg hover:bg-primary/20 w-12 h-12 flex items-center justify-center transition-all"
+                >
+                  {isDark ? (
+                    <Sun className="w-6 h-6 text-primary font-bold" />
+                  ) : (
+                    <Moon className="w-6 h-6 text-primary font-bold" />
+                  )}
+                </Button>
+              </>
             )}
             <Button
               variant="ghost"

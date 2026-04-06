@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { BookOpen, Brain, Lightbulb, TrendingUp, Library } from 'lucide-react';
 import { getTradesFromStorage } from '@/lib/storage';
+import { useLanguage } from '@/lib/language-context';
 
 export default function Home() {
+  const { t } = useLanguage();
   const [journalCount, setJournalCount] = useState(0);
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
   const [currentMotivationIndex, setCurrentMotivationIndex] = useState(0);
@@ -320,7 +322,7 @@ export default function Home() {
       {/* Daily Motivation Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Daily Wisdom & Motivation</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">{t('home.motivationTitle')}</h2>
           <div className="space-y-6">
             {/* Motivation Display */}
             <Card className="p-8 md:p-10 border-l-4 border-l-primary min-h-64 flex flex-col justify-center">
@@ -344,12 +346,12 @@ export default function Home() {
                 variant="outline"
                 className="flex-1 sm:flex-initial"
               >
-                ← Previous
+                ← {t('home.previous')}
               </Button>
               
               <div className="text-center">
                 <p className="text-sm font-medium text-muted-foreground">
-                  {currentMotivationIndex + 1} / {motivations.length}
+                  {currentMotivationIndex + 1} {t('home.of')} {motivations.length}
                 </p>
               </div>
 
@@ -358,13 +360,13 @@ export default function Home() {
                 variant="outline"
                 className="flex-1 sm:flex-initial"
               >
-                Next →
+                {t('home.next')} →
               </Button>
             </div>
 
             {/* Category Filter Info */}
             <div className="text-center text-sm text-muted-foreground">
-              <p>Browse through {motivations.length} daily motivations to inspire your trading journey</p>
+              <p>{t('home.browseMotivations')}</p>
             </div>
           </div>
         </div>
