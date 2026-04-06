@@ -1,10 +1,8 @@
-import { Trade, TradeFormData, TradingSetup, EconomicEvent, TradingReport } from './types';
+import { Trade, TradeFormData, TradingSetup } from './types';
 
 const TRADES_STORAGE_KEY = 'trading-journal-trades';
 const FORM_DRAFT_KEY = 'trading-journal-draft';
 const SETUPS_STORAGE_KEY = 'trading-journal-setups';
-const ECONOMIC_EVENTS_KEY = 'trading-journal-events';
-const REPORTS_STORAGE_KEY = 'trading-journal-reports';
 
 export function getTradesFromStorage(): Trade[] {
   if (typeof window === 'undefined') return [];
@@ -95,66 +93,4 @@ export function deleteSetupFromStorage(id: string): void {
   const setups = getSetupsFromStorage();
   const filtered = setups.filter(s => s.id !== id);
   localStorage.setItem(SETUPS_STORAGE_KEY, JSON.stringify(filtered));
-}
-
-// Economic Events Storage
-export function getEconomicEventsFromStorage(): EconomicEvent[] {
-  if (typeof window === 'undefined') return [];
-  
-  const stored = localStorage.getItem(ECONOMIC_EVENTS_KEY);
-  return stored ? JSON.parse(stored) : [];
-}
-
-export function saveEconomicEventToStorage(event: EconomicEvent): void {
-  if (typeof window === 'undefined') return;
-  
-  const events = getEconomicEventsFromStorage();
-  const existingIndex = events.findIndex(e => e.id === event.id);
-  
-  if (existingIndex >= 0) {
-    events[existingIndex] = event;
-  } else {
-    events.push(event);
-  }
-  
-  localStorage.setItem(ECONOMIC_EVENTS_KEY, JSON.stringify(events));
-}
-
-export function deleteEconomicEventFromStorage(id: string): void {
-  if (typeof window === 'undefined') return;
-  
-  const events = getEconomicEventsFromStorage();
-  const filtered = events.filter(e => e.id !== id);
-  localStorage.setItem(ECONOMIC_EVENTS_KEY, JSON.stringify(filtered));
-}
-
-// Reports Storage
-export function getReportsFromStorage(): TradingReport[] {
-  if (typeof window === 'undefined') return [];
-  
-  const stored = localStorage.getItem(REPORTS_STORAGE_KEY);
-  return stored ? JSON.parse(stored) : [];
-}
-
-export function saveReportToStorage(report: TradingReport): void {
-  if (typeof window === 'undefined') return;
-  
-  const reports = getReportsFromStorage();
-  const existingIndex = reports.findIndex(r => r.id === report.id);
-  
-  if (existingIndex >= 0) {
-    reports[existingIndex] = report;
-  } else {
-    reports.push(report);
-  }
-  
-  localStorage.setItem(REPORTS_STORAGE_KEY, JSON.stringify(reports));
-}
-
-export function deleteReportFromStorage(id: string): void {
-  if (typeof window === 'undefined') return;
-  
-  const reports = getReportsFromStorage();
-  const filtered = reports.filter(r => r.id !== id);
-  localStorage.setItem(REPORTS_STORAGE_KEY, JSON.stringify(filtered));
 }

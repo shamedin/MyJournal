@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Moon, Sun, BookOpen, BarChart3, History, Combine, TrendingUp, Library, FileText, Calendar } from 'lucide-react';
+import { Moon, Sun, BookOpen, BarChart3, History, Combine, TrendingUp, Library } from 'lucide-react';
 
 export function MainNav() {
   const pathname = usePathname();
@@ -41,8 +41,6 @@ export function MainNav() {
     { href: '/dashboard', label: 'Dashboard', icon: TrendingUp },
     { href: '/statistics', label: 'Statistics', icon: BarChart3 },
     { href: '/setups', label: 'Setups', icon: Library },
-    { href: '/reports', label: 'Reports', icon: FileText },
-    { href: '/calendar', label: 'Calendar', icon: Calendar },
     { href: '/history', label: 'History', icon: History },
     { href: '/pdf-merger', label: 'PDF Merger', icon: Combine },
   ];

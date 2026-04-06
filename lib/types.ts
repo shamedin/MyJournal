@@ -88,39 +88,3 @@ export interface TradingSetup {
   winRate: number;
   totalUsed: number;
 }
-
-export interface EconomicEvent {
-  id: string;
-  name: string;
-  country: string;
-  date: string;
-  time: string;
-  impact: 'HIGH' | 'MEDIUM' | 'LOW';
-  forecast: string;
-  previous: string;
-  actual: string;
-  currency: string;
-  notes: string;
-}
-
-export interface TradingReport {
-  id: string;
-  month: string;
-  year: number;
-  startDate: string;
-  endDate: string;
-  totalTrades: number;
-  winRate: number;
-  profitFactor: number;
-  totalProfit: number;
-  bestTrade: Trade | null;
-  worstTrade: Trade | null;
-  averageWin: number;
-  averageLoss: number;
-  topSetup: TradingSetup | null;
-  emotionalInsights: string;
-  areasForImprovement: string[];
-  lessonsLearned: string[];
-  nextMonthGoals: string[];
-  createdAt: string;
-}
