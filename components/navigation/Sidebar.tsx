@@ -18,6 +18,16 @@ const DesktopLanguageSelector = dynamic(
   { ssr: false }
 );
 
+const SidebarNav = dynamic(
+  () => import('./SidebarContent').then(mod => mod.SidebarNav),
+  { ssr: false }
+);
+
+const SidebarMobileNav = dynamic(
+  () => import('./SidebarContent').then(mod => mod.SidebarMobileNav),
+  { ssr: false }
+);
+
 export function Sidebar() {
   const pathname = usePathname();
   const [isDark, setIsDark] = useState(false);
@@ -55,13 +65,13 @@ export function Sidebar() {
   };
 
   const navItems = [
-    { href: '/', label: 'Home', icon: BookOpen },
-    { href: '/journal', label: 'Journal', icon: BookOpen },
-    { href: '/dashboard', label: 'Dashboard', icon: TrendingUp },
-    { href: '/statistics', label: 'Statistics', icon: BarChart3 },
-    { href: '/setups', label: 'Setups', icon: Library },
-    { href: '/history', label: 'History', icon: History },
-    { href: '/pdf-merger', label: 'PDF Merger', icon: Combine },
+    { href: '/', labelKey: 'nav.home', icon: <BookOpen className="w-5 h-5 flex-shrink-0" /> },
+    { href: '/journal', labelKey: 'nav.journal', icon: <BookOpen className="w-5 h-5 flex-shrink-0" /> },
+    { href: '/dashboard', labelKey: 'nav.dashboard', icon: <TrendingUp className="w-5 h-5 flex-shrink-0" /> },
+    { href: '/statistics', labelKey: 'nav.statistics', icon: <BarChart3 className="w-5 h-5 flex-shrink-0" /> },
+    { href: '/setups', labelKey: 'sidebar.setups', icon: <Library className="w-5 h-5 flex-shrink-0" /> },
+    { href: '/history', labelKey: 'nav.history', icon: <History className="w-5 h-5 flex-shrink-0" /> },
+    { href: '/pdf-merger', labelKey: 'nav.pdfMerger', icon: <Combine className="w-5 h-5 flex-shrink-0" /> },
   ];
 
   return (
@@ -76,51 +86,15 @@ export function Sidebar() {
           <span className="text-sidebar-foreground text-lg font-bold">TradeLog</span>
         </Link>
 
-        {/* Navigation Links */}
-        <nav className="flex-1 space-y-2">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium ${
-                  isActive(item.href)
-                    ? 'bg-gradient-to-r from-sidebar-primary to-sidebar-accent text-sidebar-primary-foreground shadow-lg'
-                    : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/20'
-                }`}
-              >
-                <Icon className="w-5 h-5 flex-shrink-0" />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Dark Mode Toggle */}
-        <div className="space-y-4 pt-6 border-t border-sidebar-border/50">
-          {/* Language Selector */}
-          <DesktopLanguageSelector />
-
-          {/* Theme Toggle */}
-          <div className="flex items-center justify-between px-4">
-            <span className="text-sm text-sidebar-foreground/60">Theme</span>
-            {mounted && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleDarkMode}
-                className="rounded-lg hover:bg-sidebar-accent/30"
-              >
-                {isDark ? (
-                  <Sun className="w-5 h-5 text-sidebar-foreground" />
-                ) : (
-                  <Moon className="w-5 h-5 text-sidebar-foreground" />
-                )}
-              </Button>
-            )}
-          </div>
-        </div>
+        {/* Navigation */}
+        <SidebarNav 
+          isActive={isActive} 
+          isDark={isDark} 
+          toggleDarkMode={toggleDarkMode} 
+          mounted={mounted}
+          LanguageControls={LanguageControls}
+          DesktopLanguageSelector={DesktopLanguageSelector}
+        />
       </aside>
 
       {/* Mobile/Tablet Header */}
@@ -170,25 +144,9 @@ export function Sidebar() {
 
         {/* Mobile Sidebar Menu */}
         {sidebarOpen && (
-          <nav className="border-t border-border bg-card/60 px-4 py-4 space-y-2 animate-in slide-in-from-top-2">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium ${
-                    isActive(item.href)
-                      ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg'
-                      : 'text-foreground/70 hover:text-foreground hover:bg-accent/20'
-                  }`}
-                >
-                  <Icon className="w-5 h-5 flex-shrink-0" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
+          <div className="border-t border-border bg-card/60 px-4 py-4 space-y-2 animate-in slide-in-from-top-2">
+            <SidebarMobileNav navItems={navItems} isActive={isActive} />
+          </div>
         )}
       </header>
     </>

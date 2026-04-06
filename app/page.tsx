@@ -9,286 +9,55 @@ import { getTradesFromStorage } from '@/lib/storage';
 import { useLanguage } from '@/lib/language-context';
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [journalCount, setJournalCount] = useState(0);
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
   const [currentMotivationIndex, setCurrentMotivationIndex] = useState(0);
 
-  const teachings = [
-    {
-      title: 'Risk Management is Everything',
-      content: 'The most successful traders are not those who win the most trades, but those who manage risk effectively. Never risk more than 1-2% of your account on a single trade. This discipline ensures that even a series of losses won\'t wipe out your account. The traders who survive and thrive in forex understand that preserving capital is more important than chasing profits. Risk management is not a limitation; it is your foundation for long-term success.',
-      author: 'Forex Trading Wisdom',
-    },
-    {
-      title: 'Master Your Trading Psychology',
-      content: 'Forex trading is 90% psychology and 10% strategy. Fear and greed are the twin enemies of profitable trading. Fear makes you exit winning trades too early; greed makes you hold losing trades too long. Learn to observe your emotions without letting them control your decisions. Keep a trading journal, document your trades, and analyze your emotional patterns. The trader who masters their mind will master the markets.',
-      author: 'Trading Psychology Mastery',
-    },
-    {
-      title: 'The Power of Your Trading Plan',
-      content: 'A trading plan is your roadmap to success. Before you enter any trade, know exactly where you will enter, where you will exit with profit, and where you will cut losses. Never deviate from your plan because of emotions or market noise. Your plan is the result of careful analysis and risk assessment. Those who trade without a plan are gambling; those with plans are investing intelligently. Consistency in following your plan is what separates winners from losers.',
-      author: 'Trading Strategy Principles',
-    },
-    {
-      title: 'Learn from Every Trade',
-      content: 'Both winning and losing trades are lessons, not outcomes. Every trade you make teaches you something about the market and about yourself. Keep detailed records of your trades, including entry reasons, exit decisions, and emotional state. Review your journal regularly to identify patterns and areas for improvement. The traders who improve fastest are those who treat every trade as data for learning, not as a win or loss to celebrate or regret. Your journal is your path to continuous improvement.',
-      author: 'Continuous Trading Improvement',
-    },
-  ];
+  // Get translated motivations
+  const getMotivations = () => {
+    const motivationKeys = [
+      { quote: 'motivations.quote1', author: 'motivations.author1' },
+      { quote: 'motivations.quote2', author: 'motivations.author2' },
+      { quote: 'motivations.quote3', author: 'motivations.author3' },
+      { quote: 'motivations.quote4', author: 'motivations.author4' },
+      { quote: 'motivations.quote5', author: 'motivations.author5' },
+      { quote: 'motivations.quote6', author: 'motivations.author6' },
+      { quote: 'motivations.quote7', author: 'motivations.author7' },
+      { quote: 'motivations.quote8', author: 'motivations.author8' },
+      { quote: 'motivations.quote9', author: 'motivations.author9' },
+      { quote: 'motivations.quote10', author: 'motivations.author10' },
+    ];
+    return motivationKeys.map(m => ({
+      quote: t(m.quote),
+      author: t(m.author),
+      category: t('home.mindsetTitle'),
+    }));
+  };
 
-  const motivations = [
-    {
-      quote: 'The goal of a successful trader is to make the best trades. Money is secondary.',
-      author: 'Alexander Elder',
-      category: 'Trading Mindset & Discipline',
-    },
-    {
-      quote: 'Risk comes from not knowing what you\'re doing.',
-      author: 'Warren Buffett',
-      category: 'Trading Mindset & Discipline',
-    },
-    {
-      quote: 'It\'s not whether you\'re right or wrong, but how much you make when you\'re right and how much you lose when you\'re wrong.',
-      author: 'George Soros',
-      category: 'Trading Mindset & Discipline',
-    },
-    {
-      quote: 'Amateurs think about how much money they can make. Professionals think about how much money they could lose.',
-      author: 'Jack Schwager',
-      category: 'Trading Mindset & Discipline',
-    },
-    {
-      quote: 'The market is a device for transferring money from the impatient to the patient.',
-      author: 'Warren Buffett',
-      category: 'Trading Mindset & Discipline',
-    },
-    {
-      quote: 'Trading doesn\'t just reveal your character, it also builds it.',
-      author: 'Yvan Byeajee',
-      category: 'Psychology & Emotions',
-    },
-    {
-      quote: 'The biggest risk is not taking any risk.',
-      author: 'Mark Zuckerberg',
-      category: 'Psychology & Emotions',
-    },
-    {
-      quote: 'Control your emotions or they will control you.',
-      author: 'Alexander Elder',
-      category: 'Psychology & Emotions',
-    },
-    {
-      quote: 'Fear and greed are stronger than long-term resolve.',
-      author: 'Peter Bernstein',
-      category: 'Psychology & Emotions',
-    },
-    {
-      quote: 'You must be able to accept losses calmly.',
-      author: 'Van K. Tharp',
-      category: 'Psychology & Emotions',
-    },
-    {
-      quote: 'If you can\'t take a small loss, sooner or later you will take the mother of all losses.',
-      author: 'Ed Seykota',
-      category: 'Risk Management',
-    },
-    {
-      quote: 'The most important rule of trading is to play great defense.',
-      author: 'Paul Tudor Jones',
-      category: 'Risk Management',
-    },
-    {
-      quote: 'Never risk more than you can afford to lose.',
-      author: 'Larry Hite',
-      category: 'Risk Management',
-    },
-    {
-      quote: 'Losers average losers.',
-      author: 'Paul Tudor Jones',
-      category: 'Risk Management',
-    },
-    {
-      quote: 'Cut your losses short and let your profits run.',
-      author: 'David Ricardo',
-      category: 'Risk Management',
-    },
-    {
-      quote: 'Trade what you see, not what you think.',
-      author: 'Doug Gregory',
-      category: 'Strategy & Edge',
-    },
-    {
-      quote: 'The trend is your friend.',
-      author: 'Martin Zweig',
-      category: 'Strategy & Edge',
-    },
-    {
-      quote: 'Markets are never wrong—opinions often are.',
-      author: 'Jesse Livermore',
-      category: 'Strategy & Edge',
-    },
-    {
-      quote: 'I never try to predict the market.',
-      author: 'George Soros',
-      category: 'Strategy & Edge',
-    },
-    {
-      quote: 'Successful trading is always an emotional battle.',
-      author: 'Jesse Livermore',
-      category: 'Strategy & Edge',
-    },
-    {
-      quote: 'Patience is not the ability to wait, but how you act while waiting.',
-      author: 'Joyce Meyer',
-      category: 'Consistency & Patience',
-    },
-    {
-      quote: 'There is a time to go long, a time to go short, and a time to go fishing.',
-      author: 'Jesse Livermore',
-      category: 'Consistency & Patience',
-    },
-    {
-      quote: 'You don\'t need to trade every day.',
-      author: 'Unknown Trader',
-      category: 'Consistency & Patience',
-    },
-    {
-      quote: 'Good trading is boring.',
-      author: 'George Soros',
-      category: 'Consistency & Patience',
-    },
-    {
-      quote: 'Wait for the right setup. That\'s where the money is.',
-      author: 'Michael Marcus',
-      category: 'Consistency & Patience',
-    },
-    {
-      quote: 'Every trader has strengths and weaknesses.',
-      author: 'Larry Hite',
-      category: 'Learning & Growth',
-    },
-    {
-      quote: 'Learn to take losses. The most important thing in making money is not letting your losses get out of hand.',
-      author: 'Marty Schwartz',
-      category: 'Learning & Growth',
-    },
-    {
-      quote: 'The hard work in trading comes in the preparation.',
-      author: 'Jack Schwager',
-      category: 'Learning & Growth',
-    },
-    {
-      quote: 'A good trader knows when not to trade.',
-      author: 'Unknown Trader',
-      category: 'Learning & Growth',
-    },
-    {
-      quote: 'The market teaches humility.',
-      author: 'Unknown Trader',
-      category: 'Learning & Growth',
-    },
-    {
-      quote: 'Hope is not a strategy.',
-      author: 'Vince Lombardi',
-      category: 'Professional Mindset',
-    },
-    {
-      quote: 'Plan the trade and trade the plan.',
-      author: 'Unknown Trader',
-      category: 'Professional Mindset',
-    },
-    {
-      quote: 'Discipline is the bridge between goals and accomplishment.',
-      author: 'Jim Rohn',
-      category: 'Professional Mindset',
-    },
-    {
-      quote: 'Without discipline, you don\'t have a strategy.',
-      author: 'Unknown Trader',
-      category: 'Professional Mindset',
-    },
-    {
-      quote: 'Trading is a business, not a gamble.',
-      author: 'Alexander Elder',
-      category: 'Professional Mindset',
-    },
-    {
-      quote: 'Losses are part of the game.',
-      author: 'Ed Seykota',
-      category: 'Losses & Failure',
-    },
-    {
-      quote: 'Fail fast, learn faster.',
-      author: 'Unknown Trader',
-      category: 'Losses & Failure',
-    },
-    {
-      quote: 'Every loss is tuition.',
-      author: 'Unknown Trader',
-      category: 'Losses & Failure',
-    },
-    {
-      quote: 'It\'s okay to be wrong, but not okay to stay wrong.',
-      author: 'Unknown Trader',
-      category: 'Losses & Failure',
-    },
-    {
-      quote: 'The market will always punish arrogance.',
-      author: 'Unknown Trader',
-      category: 'Losses & Failure',
-    },
-    {
-      quote: 'Consistency is more important than intensity.',
-      author: 'Unknown Trader',
-      category: 'Success & Mastery',
-    },
-    {
-      quote: 'Master one strategy instead of chasing many.',
-      author: 'Unknown Trader',
-      category: 'Success & Mastery',
-    },
-    {
-      quote: 'Focus on process, not profit.',
-      author: 'Unknown Trader',
-      category: 'Success & Mastery',
-    },
-    {
-      quote: 'Small edges, repeated consistently, create big results.',
-      author: 'Unknown Trader',
-      category: 'Success & Mastery',
-    },
-    {
-      quote: 'The goal is survival first, profit second.',
-      author: 'Unknown Trader',
-      category: 'Success & Mastery',
-    },
-    {
-      quote: 'Trade small, trade often, trade consistently.',
-      author: 'Unknown Trader',
-      category: 'Final Wisdom',
-    },
-    {
-      quote: 'You are not competing with others, only yourself.',
-      author: 'Unknown Trader',
-      category: 'Final Wisdom',
-    },
-    {
-      quote: 'Your biggest enemy is your own mind.',
-      author: 'Unknown Trader',
-      category: 'Final Wisdom',
-    },
-    {
-      quote: 'The chart reflects human behavior.',
-      author: 'Jesse Livermore',
-      category: 'Final Wisdom',
-    },
-    {
-      quote: 'Discipline + Risk Management = Long-term survival.',
-      author: 'Unknown Trader',
-      category: 'Final Wisdom',
-    },
-  ];
+  // Get translated teachings
+  const getTeachings = () => {
+    return [
+      {
+        title: t('teachings.riskManagement'),
+        content: t('teachings.riskManagementContent'),
+        author: t('teachings.author1'),
+      },
+      {
+        title: t('teachings.tradingPlan'),
+        content: t('teachings.tradingPlanContent'),
+        author: t('teachings.author2'),
+      },
+      {
+        title: t('teachings.learnTrade'),
+        content: t('teachings.learnTradeContent'),
+        author: t('teachings.author3'),
+      },
+    ];
+  };
+
+  const teachings = getTeachings();
+  const motivations = getMotivations();
 
   useEffect(() => {
     const trades = getTradesFromStorage();
