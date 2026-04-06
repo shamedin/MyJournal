@@ -12,18 +12,12 @@ const isDev = process.env.NODE_ENV === 'development' ||
 const startStaticServer = () => {
   if (isDev) return Promise.resolve();
   
-  return new Promise((resolve, reject) => {
-    try {
-      const server = require('./static-server.js');
-      // Give server time to initialize
-      setTimeout(() => {
-        console.log('[v0] Static server initialized');
-        resolve();
-      }, 1000);
-    } catch (error) {
-      console.error('[v0] Failed to start static server:', error);
-      reject(error);
-    }
+  return new Promise((resolve) => {
+    staticServer = require('./static-server.js');
+    staticServer.on('listening', () => {
+      console.log('[v0] Static server started');
+      resolve();
+    });
   });
 };
 
@@ -58,13 +52,8 @@ const createWindow = () => {
 };
 
 app.on('ready', async () => {
-  try {
-    await startStaticServer();
-    createWindow();
-  } catch (error) {
-    console.error('[v0] Error starting app:', error);
-    app.quit();
-  }
+  await startStaticServer();
+  createWindow();
 });
 
 app.on('window-all-closed', () => {

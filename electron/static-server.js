@@ -7,18 +7,6 @@ const PORT = 3000;
 const OUT_DIR = path.join(__dirname, '../out');
 
 const server = http.createServer((req, res) => {
-  // Add CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
-  // Handle OPTIONS requests
-  if (req.method === 'OPTIONS') {
-    res.writeHead(200);
-    res.end();
-    return;
-  }
-
   // Parse URL and remove query string
   const parsedUrl = url.parse(req.url, true);
   let pathname = parsedUrl.pathname;
@@ -46,10 +34,7 @@ const server = http.createServer((req, res) => {
   if (!fs.existsSync(filePath)) {
     // Try with .html extension if not found and no extension
     if (!path.extname(filePath)) {
-      const htmlPath = filePath + '.html';
-      if (fs.existsSync(htmlPath)) {
-        filePath = htmlPath;
-      }
+      filePath = filePath + '.html';
     }
 
     // If still not found, serve index.html (for client-side routing)
