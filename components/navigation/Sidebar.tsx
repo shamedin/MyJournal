@@ -52,13 +52,13 @@ export function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:fixed lg:left-0 lg:top-0 lg:h-screen lg:w-64 lg:border-r lg:border-border lg:bg-background lg:p-6 lg:flex lg:flex-col lg:gap-8 lg:pt-6">
+      <aside className="hidden lg:fixed lg:left-0 lg:top-0 lg:h-screen lg:w-64 lg:bg-sidebar lg:border-r lg:border-sidebar-border lg:p-6 lg:flex lg:flex-col lg:gap-8 lg:pt-6 lg:shadow-xl">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 font-bold text-xl hover:opacity-80 transition-opacity">
-          <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-            <BookOpen className="w-6 h-6 text-primary-foreground" />
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-sidebar-primary to-accent flex items-center justify-center shadow-lg">
+            <BookOpen className="w-6 h-6 text-sidebar-primary-foreground" />
           </div>
-          <span className="text-lg">TradeLog</span>
+          <span className="text-sidebar-foreground text-lg font-bold">TradeLog</span>
         </Link>
 
         {/* Navigation Links */}
@@ -69,10 +69,10 @@ export function Sidebar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-medium ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium ${
                   isActive(item.href)
-                    ? 'bg-primary text-primary-foreground shadow-md'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                    ? 'bg-gradient-to-r from-sidebar-primary to-sidebar-accent text-sidebar-primary-foreground shadow-lg'
+                    : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/20'
                 }`}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
@@ -83,19 +83,19 @@ export function Sidebar() {
         </nav>
 
         {/* Dark Mode Toggle */}
-        <div className="flex items-center justify-between pt-6 border-t border-border">
-          <span className="text-sm text-muted-foreground">Theme</span>
+        <div className="flex items-center justify-between pt-6 border-t border-sidebar-border/50">
+          <span className="text-sm text-sidebar-foreground/60">Theme</span>
           {mounted && (
             <Button
               variant="ghost"
               size="icon"
               onClick={toggleDarkMode}
-              className="rounded-lg"
+              className="rounded-lg hover:bg-sidebar-accent/30"
             >
               {isDark ? (
-                <Sun className="w-5 h-5" />
+                <Sun className="w-5 h-5 text-sidebar-foreground" />
               ) : (
-                <Moon className="w-5 h-5" />
+                <Moon className="w-5 h-5 text-sidebar-foreground" />
               )}
             </Button>
           )}
@@ -103,14 +103,14 @@ export function Sidebar() {
       </aside>
 
       {/* Mobile/Tablet Header */}
-      <header className="lg:hidden sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="lg:hidden sticky top-0 z-50 border-b border-border bg-gradient-to-r from-background via-background to-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-md">
         <div className="flex items-center justify-between px-4 py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
               <BookOpen className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span>TradeLog</span>
+            <span className="text-foreground font-bold">TradeLog</span>
           </Link>
 
           {/* Right Actions */}
@@ -120,12 +120,12 @@ export function Sidebar() {
                 variant="ghost"
                 size="icon"
                 onClick={toggleDarkMode}
-                className="rounded-lg"
+                className="rounded-lg hover:bg-muted"
               >
                 {isDark ? (
-                  <Sun className="w-5 h-5" />
+                  <Sun className="w-5 h-5 text-foreground" />
                 ) : (
-                  <Moon className="w-5 h-5" />
+                  <Moon className="w-5 h-5 text-foreground" />
                 )}
               </Button>
             )}
@@ -133,12 +133,12 @@ export function Sidebar() {
               variant="ghost"
               size="icon"
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="rounded-lg"
+              className="rounded-lg hover:bg-muted w-10 h-10 flex items-center justify-center"
             >
               {sidebarOpen ? (
-                <X className="w-5 h-5" />
+                <X className="w-6 h-6 text-foreground" />
               ) : (
-                <Menu className="w-5 h-5" />
+                <Menu className="w-6 h-6 text-foreground" />
               )}
             </Button>
           </div>
@@ -146,17 +146,17 @@ export function Sidebar() {
 
         {/* Mobile Sidebar Menu */}
         {sidebarOpen && (
-          <nav className="border-t border-border bg-muted/50 px-4 py-4 space-y-2">
+          <nav className="border-t border-border bg-card/60 px-4 py-4 space-y-2 animate-in slide-in-from-top-2">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-medium ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium ${
                     isActive(item.href)
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                      ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg'
+                      : 'text-foreground/70 hover:text-foreground hover:bg-accent/20'
                   }`}
                 >
                   <Icon className="w-5 h-5 flex-shrink-0" />
