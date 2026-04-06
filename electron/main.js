@@ -1,5 +1,6 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, protocol } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 let mainWindow = null;
 
@@ -25,7 +26,7 @@ const createWindow = () => {
 
   const startUrl = isDev
     ? 'http://localhost:3000'
-    : `file://${path.join(__dirname, '../out/index.html')}`;
+    : `file://${path.join(__dirname, '../out/index.html').replace(/\\/g, '/')}`;
 
   mainWindow.loadURL(startUrl);
 
@@ -37,6 +38,60 @@ const createWindow = () => {
     mainWindow = null;
   });
 };
+
+// Intercept file:// requests to properly serve CSS and other assets
+if (!isDev) {
+  app.whenReady().then(() => {
+    protocol.interceptFileProtocol('file', (request, callback) => {
+      const url = request.url.substr(7);
+      let filePath = decodeURIComponent(url);
+
+      // Handle Windows paths
+      if (process.platform === 'win32') {
+        filePath = filePath.replace(/^\/([a-z]):/i, '$1:');
+      }
+
+      // Try to serve the file
+      fs.readFile(filePath, (error, data) => {
+        if (error) {
+          // If file not found and it's an HTML request, try serving index.html
+          if (filePath.endsWith('.html') === false) {
+            const indexPath = path.join(path.dirname(filePath), 'index.html');
+            fs.readFile(indexPath, (err, data) => {
+              if (!err) {
+                return callback({ mimeType: 'text/html', data: data });
+              }
+              callback(-6); // FILE_NOT_FOUND
+            });
+          } else {
+            callback(-6); // FILE_NOT_FOUND
+          }
+        } else {
+          const ext = path.extname(filePath).toLowerCase();
+          const mimeTypes = {
+            '.html': 'text/html',
+            '.css': 'text/css',
+            '.js': 'application/javascript',
+            '.json': 'application/json',
+            '.png': 'image/png',
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.gif': 'image/gif',
+            '.svg': 'image/svg+xml',
+            '.woff': 'font/woff',
+            '.woff2': 'font/woff2',
+            '.ttf': 'font/ttf',
+            '.eot': 'application/vnd.ms-fontobject',
+          };
+          callback({
+            mimeType: mimeTypes[ext] || 'application/octet-stream',
+            data: data,
+          });
+        }
+      });
+    });
+  });
+}
 
 app.on('ready', createWindow);
 
