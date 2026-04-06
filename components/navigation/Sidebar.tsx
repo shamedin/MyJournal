@@ -3,17 +3,26 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
-import { useLanguage } from '@/lib/language-context';
-import { Moon, Sun, BookOpen, BarChart3, History, Combine, TrendingUp, Library, Menu, X, Globe } from 'lucide-react';
+import { Moon, Sun, BookOpen, BarChart3, History, Combine, TrendingUp, Library, Menu, X } from 'lucide-react';
+
+// Dynamically import components that need language context with ssr disabled
+const LanguageControls = dynamic(
+  () => import('./LanguageControls').then(mod => mod.LanguageControls),
+  { ssr: false }
+);
+
+const DesktopLanguageSelector = dynamic(
+  () => import('./LanguageControls').then(mod => mod.DesktopLanguageSelector),
+  { ssr: false }
+);
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { language, setLanguage, t } = useLanguage();
   const [isDark, setIsDark] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -55,12 +64,6 @@ export function Sidebar() {
     { href: '/pdf-merger', label: 'PDF Merger', icon: Combine },
   ];
 
-  const languageOptions = [
-    { code: 'en', label: 'English' },
-    { code: 'am', label: 'አማርኛ (Amharic)' },
-    { code: 'af', label: 'Afan Oromo' },
-  ];
-
   return (
     <>
       {/* Desktop Sidebar */}
@@ -97,26 +100,11 @@ export function Sidebar() {
         {/* Dark Mode Toggle */}
         <div className="space-y-4 pt-6 border-t border-sidebar-border/50">
           {/* Language Selector */}
-          <div className="space-y-2">
-            <label className="text-sm text-sidebar-foreground/60 block px-4">{t('sidebar.selectLanguage')}</label>
-            <div className="grid grid-cols-3 gap-2 px-2">
-              {languageOptions.map((lang) => (
-                <Button
-                  key={lang.code}
-                  onClick={() => setLanguage(lang.code as any)}
-                  variant={language === lang.code ? 'default' : 'outline'}
-                  size="sm"
-                  className="text-xs h-8"
-                >
-                  {lang.code.toUpperCase()}
-                </Button>
-              ))}
-            </div>
-          </div>
+          <DesktopLanguageSelector />
 
           {/* Theme Toggle */}
           <div className="flex items-center justify-between px-4">
-            <span className="text-sm text-sidebar-foreground/60">{t('settings.theme')}</span>
+            <span className="text-sm text-sidebar-foreground/60">Theme</span>
             {mounted && (
               <Button
                 variant="ghost"
@@ -150,34 +138,7 @@ export function Sidebar() {
           <div className="flex items-center gap-0">
             {mounted && (
               <>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-                  className="rounded-lg hover:bg-primary/20 w-12 h-12 flex items-center justify-center transition-all relative"
-                >
-                  <Globe className="w-6 h-6 text-primary font-bold" />
-                </Button>
-                {showLanguageMenu && (
-                  <div className="absolute top-14 right-14 bg-card border border-border rounded-lg shadow-lg p-2 space-y-1 z-50">
-                    {languageOptions.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => {
-                          setLanguage(lang.code as any);
-                          setShowLanguageMenu(false);
-                        }}
-                        className={`block w-full text-left px-3 py-2 text-sm rounded transition-colors ${
-                          language === lang.code
-                            ? 'bg-primary text-primary-foreground'
-                            : 'hover:bg-muted'
-                        }`}
-                      >
-                        {lang.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                <LanguageControls />
                 <Button
                   variant="ghost"
                   size="icon"

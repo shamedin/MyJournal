@@ -16,7 +16,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Get saved language from localStorage
+    // Get saved language from localStorage on client-side
     const saved = localStorage.getItem('preferred-language') as Language | null;
     if (saved && ['en', 'am', 'af'].includes(saved)) {
       setLanguageState(saved);
@@ -33,12 +33,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     return getTranslation(language, key, defaultValue);
   };
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
+  const contextValue: LanguageContextType = { language, setLanguage, t };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={contextValue}>
       {children}
     </LanguageContext.Provider>
   );
