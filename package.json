@@ -90,6 +90,7 @@
   "build": {
     "appId": "com.tradingjournal.desktop",
     "productName": "Trading Journal",
+    "asar": false,
     "directories": {
       "buildResources": "public",
       "output": "dist"
