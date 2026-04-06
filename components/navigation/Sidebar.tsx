@@ -14,7 +14,8 @@ export function Sidebar() {
 
   useEffect(() => {
     setMounted(true);
-    const isDarkMode = document.documentElement.classList.contains('dark');
+    const theme = localStorage.getItem('theme');
+    const isDarkMode = theme === 'dark';
     setIsDark(isDarkMode);
   }, []);
 
