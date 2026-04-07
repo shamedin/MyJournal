@@ -8,6 +8,7 @@ import { ArrowLeft, TrendingUp, TrendingDown, Target, Award } from 'lucide-react
 import { getTradesFromStorage } from '@/lib/storage';
 import { calculateStatistics } from '@/lib/calculations';
 import { Trade } from '@/lib/types';
+import { TradingCalendar } from '@/components/dashboard/TradingCalendar';
 
 export default function Dashboard() {
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -220,6 +221,9 @@ export default function Dashboard() {
             </Card>
           )}
         </div>
+
+        {/* Trading Calendar */}
+        <TradingCalendar trades={trades} />
 
         {/* Monthly Performance */}
         <Card className="p-6 mb-8">
