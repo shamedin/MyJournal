@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,7 +9,12 @@ import { ArrowLeft, TrendingUp, TrendingDown, Target, Award } from 'lucide-react
 import { getTradesFromStorage } from '@/lib/storage';
 import { calculateStatistics } from '@/lib/calculations';
 import { Trade } from '@/lib/types';
-import { TradingCalendar } from '@/components/dashboard/TradingCalendar';
+
+// Dynamically import TradingCalendar with ssr disabled
+const TradingCalendar = dynamic(
+  () => import('@/components/dashboard/TradingCalendar').then(mod => mod.TradingCalendar),
+  { ssr: false }
+);
 
 export default function Dashboard() {
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -223,7 +229,7 @@ export default function Dashboard() {
         </div>
 
         {/* Trading Calendar */}
-        <TradingCalendar trades={trades} />
+        {trades.length > 0 && <TradingCalendar trades={trades} />}
 
         {/* Monthly Performance */}
         <Card className="p-6 mb-8">
