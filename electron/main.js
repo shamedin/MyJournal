@@ -68,60 +68,11 @@ app.on('activate', () => {
   }
 });
 
-// Create application menu
-const template = [
-  {
-    label: 'File',
-    submenu: [
-      {
-        label: 'Exit',
-        accelerator: 'CmdOrCtrl+Q',
-        click: () => {
-          app.quit();
-        },
-      },
-    ],
-  },
-  {
-    label: 'Edit',
-    submenu: [
-      { role: 'undo' },
-      { role: 'redo' },
-      { type: 'separator' },
-      { role: 'cut' },
-      { role: 'copy' },
-      { role: 'paste' },
-    ],
-  },
-  {
-    label: 'View',
-    submenu: [
-      { role: 'reload' },
-      { role: 'forceReload' },
-      { role: 'toggleDevTools' },
-      { type: 'separator' },
-      { role: 'resetZoom' },
-      { role: 'zoomIn' },
-      { role: 'zoomOut' },
-      { type: 'separator' },
-      { role: 'togglefullscreen' },
-    ],
-  },
-  {
-    label: 'Help',
-    submenu: [
-      {
-        label: 'About Trading Journal',
-        click: () => {
-          // You can create an about dialog here
-        },
-      },
-    ],
-  },
-];
-
-const menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);
+// Application menu removed - use keyboard shortcuts instead
+// File: CmdOrCtrl+Q to quit
+// Edit: Standard undo/redo/cut/copy/paste
+// View: CmdOrCtrl+R to reload, CmdOrCtrl+Shift+I for dev tools
+// Use these shortcuts without the menu bar
 
 // Handle IPC messages if needed
 ipcMain.handle('get-app-version', () => {
