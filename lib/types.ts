@@ -73,3 +73,18 @@ export interface Statistics {
   averageRR: number;
   profitFactor: number;
 }
+
+export interface TradingSetup {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  entryRules: string;
+  exitRules: string;
+  riskRewardRatio: number;
+  tags: string[];
+  createdAt: string;
+  linkedTrades: string[]; // Trade IDs that used this setup
+  winRate: number;
+  totalUsed: number;
+}

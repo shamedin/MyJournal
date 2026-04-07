@@ -1,0 +1,47 @@
+DESKTOP STANDALONE APP SETUP INSTRUCTIONS
+==========================================
+
+For building a true desktop standalone app, consider these options:
+
+1. CURRENT SETUP (Web App in Browser):
+   - Already configured for offline use with localStorage
+   - Light theme is now default
+   - Works as a Progressive Web App (PWA)
+   
+   To run:
+   - pnpm build
+   - pnpm start
+   - Creates a local server at http://localhost:3000
+   - Use the run-offline.vbs script to run in background
+
+2. TAURI (Recommended for Desktop App):
+   - Modern cross-platform desktop framework
+   - Uses Rust backend with web frontend
+   - Smaller bundle size than Electron
+   - Better performance
+   
+   Installation:
+   - npm install --save-dev @tauri-apps/cli
+   - npm run tauri init
+   - npm run tauri build (creates .exe, .msi, .dmg, .AppImage)
+
+3. ELECTRON:
+   - More mature desktop framework
+   - Larger bundle size
+   - Full Node.js integration
+   
+   Installation:
+   - npm install --save-dev electron
+   - Configure electron-main.js
+   - Create installer with electron-builder
+
+CURRENT FEATURES FOR STANDALONE:
+- Light theme as default
+- Dark mode toggle with localStorage persistence
+- Offline-first with localStorage data storage
+- No server dependencies
+- Mobile/tablet responsive design
+- Sidebar navigation for desktop
+- Hamburger menu for mobile
+
+The app is already production-ready for desktop standalone use!

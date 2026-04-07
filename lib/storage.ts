@@ -1,7 +1,8 @@
-import { Trade, TradeFormData } from './types';
+import { Trade, TradeFormData, TradingSetup } from './types';
 
 const TRADES_STORAGE_KEY = 'trading-journal-trades';
 const FORM_DRAFT_KEY = 'trading-journal-draft';
+const SETUPS_STORAGE_KEY = 'trading-journal-setups';
 
 export function getTradesFromStorage(): Trade[] {
   if (typeof window === 'undefined') return [];
@@ -61,4 +62,35 @@ export function getNextTradeId(): { totalId: number; dayId: number } {
   const dayId = todaysTrades.length + 1;
   
   return { totalId, dayId };
+}
+
+// Trading Setups Storage
+export function getSetupsFromStorage(): TradingSetup[] {
+  if (typeof window === 'undefined') return [];
+  
+  const stored = localStorage.getItem(SETUPS_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : [];
+}
+
+export function saveSetupToStorage(setup: TradingSetup): void {
+  if (typeof window === 'undefined') return;
+  
+  const setups = getSetupsFromStorage();
+  const existingIndex = setups.findIndex(s => s.id === setup.id);
+  
+  if (existingIndex >= 0) {
+    setups[existingIndex] = setup;
+  } else {
+    setups.push(setup);
+  }
+  
+  localStorage.setItem(SETUPS_STORAGE_KEY, JSON.stringify(setups));
+}
+
+export function deleteSetupFromStorage(id: string): void {
+  if (typeof window === 'undefined') return;
+  
+  const setups = getSetupsFromStorage();
+  const filtered = setups.filter(s => s.id !== id);
+  localStorage.setItem(SETUPS_STORAGE_KEY, JSON.stringify(filtered));
 }

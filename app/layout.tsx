@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import { MainNav } from '@/components/navigation/MainNav'
+import { Sidebar } from '@/components/navigation/Sidebar'
 import { Toaster } from 'sonner'
 import './globals.css'
 
@@ -9,8 +9,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'TradeLog - Trading Journal',
-  description: 'A professional trading journal app to log and track your trades',
+  title: 'My Journal - Personal Growth & Self-Discovery',
+  description: 'Your personal sanctuary for psychological growth, mental clarity, and self-improvement through journaling, reflection, and wisdom',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -44,18 +44,19 @@ export default function RootLayout({
             __html: `
               try {
                 const theme = localStorage.getItem('theme');
-                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const isDark = theme === 'dark' || (theme === null && systemDark);
+                const isDark = theme === 'dark';
                 if (isDark) {
                   document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
                 }
               } catch (e) {}
             `,
           }}
         />
       </head>
-      <body className="font-sans antialiased">
-        <MainNav />
+      <body className="font-sans antialiased lg:ml-64">
+        <Sidebar />
         {children}
         <Toaster />
         <Analytics />
